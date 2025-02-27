@@ -22,10 +22,10 @@
       <div class="navbar-nav" style="#ffff">
         <a class="nav-link active mx-0 mx-md-3 fs-6" aria-current="page" href="AdminHomePage.jsp">Home</a>
         <a class="nav-link mx-0 mx-md-3  fs-6" href="CheckupDashboard.jsp">Manage Booking</a>
-        <a class="nav-link mx-0 mx-md-3 fs-6" href="LabworkerDashboard.jsp">Manage Driver</a>
-          <a class="nav-link mx-0 mx-md-3 fs-6" href="DoctorDashboard.jsp">Manage Vehicle</a>
+        <a class="nav-link mx-0 mx-md-3 fs-6" href="DeiverDashboard.jsp">Manage Driver</a>
+        <a class="nav-link mx-0 mx-md-3 fs-6" href="VehicleDashboard.jsp">Manage Vehicle</a>
       
-        <a class="nav-link mx-0 mx-md-3 fs-6" href="PatientDashboard.jsp">Manage Customer</a>
+        <a class="nav-link mx-0 mx-md-3 fs-6" href="CustomerDashboard.jsp">Manage Customer</a>
                 
                 
         

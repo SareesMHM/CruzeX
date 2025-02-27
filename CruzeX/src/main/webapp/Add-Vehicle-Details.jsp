@@ -55,13 +55,13 @@
             <a class="link-warning nav-link px-5 mx-5" aria-current="page" href="AdminHomePage.jsp"> << Go to Home</a>
         </li>
         <li class="nav-item">
-            <a class="link-secondary  nav-link " aria-current="page" href="DoctorDashboard">Store</a>
+            <a class="link-secondary  nav-link " aria-current="page" href="VehicleDashboard.jsp">Store</a>
         </li>
         <li class="nav-item">
-            <a class="link-secondary nav-link " href="Search-Doctor-Details.jsp">Search vehicle & Update</a>
+            <a class="link-secondary nav-link " href="Search-Vehicle-Details.jsp">Search vehicle & Update</a>
         </li>
         <li class="nav-item">
-            <a class="text-white nav-link" href="Add-Doctor-Details.jsp">Add</a>
+            <a class="text-white nav-link" href="Add-Vehicle-Details.jsp">Add</a>
         </li>
     </ul>
     <br/>
@@ -71,9 +71,13 @@
             <div class="col-md-6">
                 <div class="form-container">
                     <h3 class="text-center mb-4">Register vehicle</h3>
-                    <form method="post" action="doctorController">
+                    <form method="post" action="VehicleController">
+                       <div class="mb-3">
+                            <label for="firstName" class="form-label">Vehicle ID:</label>
+                            <input type="text" class="form-control" id="firstName" name="firstName"/>
+                        </div>
                         <div class="mb-3">
-                            <label for="firstName" class="form-label">vehicle Name:</label>
+                            <label for="firstName" class="form-label">Vehicle Name:</label>
                             <input type="text" class="form-control" id="firstName" name="firstName"/>
                         </div>
                        
@@ -92,6 +96,10 @@
                                                             <option value="Recycling Items">SUV</option>
                                                         </select>
                                                     </div>
+                        <div class="mb-3">
+                            <label for="firstName" class="form-label">Month Fee:</label>
+                            <input type="text" class="form-control" id="firstName" name="firstName"/>
+                        </div>
                         <input type="hidden" name="type" value="add"/>
                         <div class="mb-3">
                             <button type="submit" class="btn btn-primary btn-register">Register</button>
