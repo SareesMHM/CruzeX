@@ -94,9 +94,9 @@
     </button>
     <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-link mx-0 mx-md-3  fs-6" href="Dashboard.jsp">Home</a>
-        <a class="nav-link active mx-0 mx-md-3 fs-6" aria-current="page" href="PatientLogReg.jsp">Customer</a>
-        <a class="nav-link mx-0 mx-md-3 fs-6" href="AvailableTest.jsp">Available Car</a>
+          <a class="nav-link mx-0 mx-md-3  fs-6" href="DeiverDashboard.jsp">Home</a>
+          <a class="nav-link active mx-0 mx-md-3 fs-6" aria-current="page" href="Login-Customer.jsp">Customer</a>
+          <a class="nav-link mx-0 mx-md-3 fs-6" href="VehicleDashboard.jsp">Available Car</a>
       </div>
     </div>
   </div>
@@ -106,7 +106,7 @@
     <div class="row justify-content-center">
         <div class="col-md-6 form-container">
             <h2>Login</h2>
-            <form action="patientLoginController" method="post">
+            <form action="driverLoginController" method="post">
                 <div class="form-group mt-4">
                     <label for="username">Username:</label>
                     <input type="text" id="username" class="form-control" name="username" required>
@@ -139,6 +139,13 @@
             return false;
         }
         return true;
+    }
+</script>
+
+<script>
+    var message = "<%= request.getAttribute("message") != null ? request.getAttribute("message") : "" %>";
+    if (message.trim() !== "") {
+        alert(message);
     }
 </script>
 

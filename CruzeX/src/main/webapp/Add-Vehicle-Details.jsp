@@ -74,31 +74,31 @@
                     <form method="post" action="VehicleController">
                        <div class="mb-3">
                             <label for="firstName" class="form-label">Vehicle ID:</label>
-                            <input type="text" class="form-control" id="firstName" name="firstName"/>
+                            <input type="text" class="form-control" id="vehicleID" name="vehicleID"/>
                         </div>
                         <div class="mb-3">
                             <label for="firstName" class="form-label">Vehicle Name:</label>
-                            <input type="text" class="form-control" id="firstName" name="firstName"/>
+                            <input type="text" class="form-control" id="vehicleName" name="vehicleName"/>
                         </div>
                        
                         
                       
                         <div class="mb-3">
-                                                        <label for="image">Image</label>
-                                                        <input type="file" id="image" name="image" >
-                                                    </div>
+                            <label for="image">Image</label>
+                            <input type="file" id="image" name="image" >
+                        </div>
                         <div class="mb-3">
-                                                        <label for="category">Category</label>
-                                                        <select id="category" name="category" >
-                                                            <option value="Collected Items">Car</option>
-                                                            <option value="Recycling Items">Van</option>
-                                                            <option value="Recycling Items">Bus</option>
-                                                            <option value="Recycling Items">SUV</option>
-                                                        </select>
-                                                    </div>
+                            <label for="category">Category</label>
+                            <select id="category" name="category" >
+                                <option value="Car">Car</option>
+                                <option value="Van">Van</option>
+                                <option value="Bus">Bus</option>
+                                <option value="SUV">SUV</option>
+                            </select>
+                        </div>
                         <div class="mb-3">
-                            <label for="firstName" class="form-label">Month Fee:</label>
-                            <input type="text" class="form-control" id="firstName" name="firstName"/>
+                            <label for="monthFee" class="form-label">Month Fee:</label>
+                            <input type="text" class="form-control" id="monthFee" name="monthFee"/>
                         </div>
                         <input type="hidden" name="type" value="add"/>
                         <div class="mb-3">
@@ -110,5 +110,11 @@
         </div>
     </div>
 </div>
+        <script>
+            var message = "<%= request.getAttribute("message") %>";
+            if (message) {
+                alert(message);
+            }
+        </script>
     </body>
 </html>

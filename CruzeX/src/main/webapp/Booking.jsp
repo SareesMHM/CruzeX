@@ -86,14 +86,17 @@
                 <input type="text" class="form-control mt-2" id="destination" name="destination"/>
                 <br/>
                 
-                <label for="bookingStatus">Status:</label>
-                <input type="text" class="form-control mt-2" id="bookingStatus" name="bookingStatus"/>
-                <input type="hidden" name="type" value="add"/>
-                <br/>
+                
                 <button type="submit" class="btn btn-primary">Schedule</button>
             </form>
         </div>
     </div>
 </div>
+    <script>
+            var message = "<%= request.getAttribute("message") %>";
+            if (message) {
+                alert(message);
+            }
+        </script>
 </body>
 </html>

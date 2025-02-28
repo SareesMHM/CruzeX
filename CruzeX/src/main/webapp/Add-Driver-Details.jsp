@@ -83,5 +83,11 @@
         </div>
     </div>
 </div>
+    <script>
+            var message = "<%= request.getAttribute("message") %>";
+            if (message) {
+                alert(message);
+            }
+        </script>
 </body>
 </html>

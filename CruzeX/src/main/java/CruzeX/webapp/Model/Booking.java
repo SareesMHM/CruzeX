@@ -19,14 +19,24 @@ public class Booking {
         this.address = address;
         this.destination = destination;
     }
+    
+    public Booking( int customerID, String bookingDate, String bookingTime, String driverName, String address, String destination) {
+
+        this.customerID = customerID;
+        this.bookingDate = bookingDate;
+        this.bookingTime = bookingTime;
+        this.driverName = driverName;
+        this.address = address;
+        this.destination = destination;
+    }
 
     public Booking() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        
     }
 
-    public Booking(int customerID, String bookingDate, String bookingTime, String driverName, String address, String destination) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+//    public Booking(int customerID, String bookingDate, String bookingTime, String driverName, String address, String destination) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//    }
 
     // Getters and setters for each field
     public int getBookingID() {

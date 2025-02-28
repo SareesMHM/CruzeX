@@ -23,7 +23,7 @@ public class DriverManager {
 
     public boolean addDriver(Driver driver) throws SQLException, ClassNotFoundException {
         Connection connection = getConnection();
-        String query = "INSERT INTO driver (DriverFirstName, DriverLastName, LicenseNumber, DriverEmail) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO driver (FirstName, LastName, LicenseNumber, Email) VALUES (?, ?, ?, ?)";
 
         PreparedStatement ps = connection.prepareStatement(query);
         ps.setString(1, driver.getFirstName());
@@ -50,10 +50,10 @@ public class DriverManager {
 
         while (rs.next()) {
             driver.setDriverID(rs.getInt("DriverID"));
-            driver.setFirstName(rs.getString("DriverFirstName"));
-            driver.setLastName(rs.getString("DriverLastName"));
+            driver.setFirstName(rs.getString("FirstName"));
+            driver.setLastName(rs.getString("LastName"));
             driver.setLicenseNumber(rs.getString("LicenseNumber"));
-            driver.setEmail(rs.getString("DriverEmail"));
+            driver.setEmail(rs.getString("Email"));
         }
 
         ps.close();
@@ -73,10 +73,10 @@ public class DriverManager {
         while (rs.next()) {
             Driver driver = new Driver(
                 rs.getInt("DriverID"),
-                rs.getString("DriverFirstName"),
-                rs.getString("DriverLastName"),
+                rs.getString("FirstName"),
+                rs.getString("LastName"),
                 rs.getString("LicenseNumber"),
-                rs.getString("DriverEmail")
+                rs.getString("Email")
             );
             driverList.add(driver);
         }
@@ -89,7 +89,7 @@ public class DriverManager {
 
     public boolean updateDriver(Driver driver) throws SQLException, ClassNotFoundException {
         Connection connection = getConnection();
-        String query = "UPDATE driver SET DriverFirstName = ?, DriverLastName = ?, LicenseNumber = ?, DriverEmail = ? WHERE DriverID = ?";
+        String query = "UPDATE driver SET FirstName = ?, LastName = ?, LicenseNumber = ?, Email = ? WHERE DriverID = ?";
 
         PreparedStatement ps = connection.prepareStatement(query);
         ps.setString(1, driver.getFirstName());

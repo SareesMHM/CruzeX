@@ -1,14 +1,14 @@
 package CruzeX.webapp.Model;
 
 public class Vehicle {
-    private int vehicleID;
+    private String vehicleID;
     private String vehicleName;
     private String image;
     private String category;
     private int monthFee; // Fixed variable name
 
     // Constructor (Updated to include monthFee)
-    public Vehicle(int vehicleID, String vehicleName, String image, String category) {
+    public Vehicle(String vehicleID, String vehicleName, String image, String category,int monthFee) {
         this.vehicleID = vehicleID;
         this.vehicleName = vehicleName;
         this.image = image;
@@ -17,11 +17,11 @@ public class Vehicle {
     }
 
     // Getters and Setters
-    public int getVehicleID() {
+    public String getVehicleID() {
         return vehicleID;
     }
 
-    public void setVehicleID(int vehicleID) {
+    public void setVehicleID(String vehicleID) {
         this.vehicleID = vehicleID;
     }
 
@@ -49,11 +49,11 @@ public class Vehicle {
         this.category = category;
     }
 
-    public int getMonthFee() { // Added getter
+    public int getMonthFee() { 
         return monthFee;
     }
 
-    public void setMonthFee(int monthFee) { // Added setter
+    public void setMonthFee(int monthFee) { 
         this.monthFee = monthFee;
     }
 }

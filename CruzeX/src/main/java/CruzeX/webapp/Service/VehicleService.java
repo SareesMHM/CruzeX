@@ -28,7 +28,7 @@ public class VehicleService {
         return getVehicleManager().addVehicle(vehicle);
     }
 
-    public Vehicle getSpecificVehicle(int vehicleID) throws ClassNotFoundException, SQLException {
+    public Vehicle getSpecificVehicle(String vehicleID) throws ClassNotFoundException, SQLException {
         return getVehicleManager().getSpecificVehicle(vehicleID);
     }
 
@@ -40,7 +40,7 @@ public class VehicleService {
         return getVehicleManager().updateVehicle(vehicle);
     }
 
-    public boolean deleteVehicle(int vehicleID) throws ClassNotFoundException, SQLException {
+    public boolean deleteVehicle(String vehicleID) throws ClassNotFoundException, SQLException {
         return getVehicleManager().deleteVehicle(vehicleID);
     }
 }

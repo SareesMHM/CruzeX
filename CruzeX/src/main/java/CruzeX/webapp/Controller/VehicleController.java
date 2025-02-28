@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,153 +18,143 @@ import java.util.List;
 @WebServlet("/VehicleController")
 public class VehicleController extends HttpServlet {
     private static final long serialVersionUID = 1L;
+    private VehicleService vehicleService = VehicleService.getVehicleServiceInstance();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String type = request.getParameter("type");
-        VehicleService vehicleService = VehicleService.getVehicleServiceInstance();
 
-        if (type != null && type.equals("specific")) {
-            getSpecificVehicle(request, response, vehicleService);
+        if ("specific".equals(type)) {
+            getSpecificVehicle(request, response);
         } else {
-            getAllVehicles(request, response, vehicleService);
+            getAllVehicles(request, response);
         }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String type = request.getParameter("type");
-        VehicleService vehicleService = VehicleService.getVehicleServiceInstance();
 
-        if (type != null && type.equals("update")) {
-            updateVehicle(request, response, vehicleService);
-        } else if (type != null && type.equals("add")) {
-            addVehicle(request, response, vehicleService);
-        } else if (type != null && type.equals("delete")) {
-            deleteVehicle(request, response, vehicleService);
+        if ("update".equals(type)) {
+            updateVehicle(request, response);
+        } else if ("add".equals(type)) {
+            addVehicle(request, response);
+        } else if ("delete".equals(type)) {
+            deleteVehicle(request, response);
         }
     }
 
-    private void getAllVehicles(HttpServletRequest request, HttpServletResponse response, VehicleService service) throws ServletException, IOException {
+    private void getAllVehicles(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<Vehicle> vehicleList = new ArrayList<>();
         String message = "";
-        List<Vehicle> vehicleList;
 
         try {
-            vehicleList = service.getAllVehicles();
+            vehicleList = vehicleService.getAllVehicles();
         } catch (ClassNotFoundException | SQLException e) {
-            message = e.getMessage();
-            vehicleList = new ArrayList<>();
+            message = "Error fetching vehicles: " + e.getMessage();
         }
 
         request.setAttribute("message", message);
         request.setAttribute("vehicleList", vehicleList);
-
         RequestDispatcher rd = request.getRequestDispatcher("VehicleDashboard.jsp");
         rd.forward(request, response);
     }
 
-    private void getSpecificVehicle(HttpServletRequest request, HttpServletResponse response, VehicleService service) throws ServletException, IOException {
-        String vehicleIdStr = request.getParameter("vehicleId");
-        int vehicleId;
-        Vehicle vehicle;
+    private void getSpecificVehicle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String vehicleId = request.getParameter("vehicleId");
         String message = "";
+        Vehicle vehicle = null;
 
-        if (vehicleIdStr != null && !vehicleIdStr.isEmpty()) {
+        if (vehicleId != null && !vehicleId.trim().isEmpty()) {
             try {
-                vehicleId = Integer.parseInt(vehicleIdStr);
-                vehicle = service.getSpecificVehicle(vehicleId);
-            } catch (NumberFormatException | ClassNotFoundException | SQLException e) {
-                message = e.getMessage();
-                vehicle = new Vehicle(0, "", "", "");
+                vehicle = vehicleService.getSpecificVehicle(vehicleId);
+            } catch (ClassNotFoundException | SQLException e) {
+                message = "Error fetching vehicle: " + e.getMessage();
             }
         } else {
             message = "Vehicle ID is missing or invalid.";
-            vehicle = new Vehicle(0, "", "", "");
         }
 
         request.setAttribute("vehicle", vehicle);
         request.setAttribute("message", message);
-
         RequestDispatcher rd = request.getRequestDispatcher("Search-Vehicle-Details.jsp");
         rd.forward(request, response);
     }
 
-    private void updateVehicle(HttpServletRequest request, HttpServletResponse response, VehicleService service) throws ServletException, IOException {
-        int vehicleId = Integer.parseInt(request.getParameter("vehicleId"));
+    private void updateVehicle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String vehicleId = request.getParameter("vehicleId");
         String vehicleName = request.getParameter("vehicleName");
         String image = request.getParameter("image");
         String category = request.getParameter("category");
-
-        Vehicle vehicle = new Vehicle(vehicleId, vehicleName, image, category);
-
-        boolean result;
+        int monthFee = 0;
         String message = "";
+
         try {
-            result = service.editVehicle(vehicle);
-            if (result) {
-                message = "Vehicle " + vehicleId + " has been successfully updated!";
-            } else {
-                message = "Failed to update the vehicle! Vehicle ID: " + vehicleId;
+            monthFee = Integer.parseInt(request.getParameter("monthFee"));
+        } catch (NumberFormatException e) {
+            message = "Invalid month fee. Please enter a valid number.";
+        }
+
+        if (vehicleId == null || vehicleId.trim().isEmpty() || vehicleName == null || category == null) {
+            message = "All fields are required.";
+        } else {
+            try {
+                Vehicle vehicle = new Vehicle(vehicleId, vehicleName, image, category, monthFee);
+                boolean result = vehicleService.editVehicle(vehicle);
+                message = result ? "Vehicle " + vehicleId + " updated successfully!" : "Failed to update vehicle.";
+            } catch (ClassNotFoundException | SQLException e) {
+                message = "Error updating vehicle: " + e.getMessage();
             }
-        } catch (ClassNotFoundException | SQLException e) {
-            message = e.getMessage();
         }
 
         request.setAttribute("message", message);
-
-        RequestDispatcher rd = request.getRequestDispatcher("Search-Vehicle-Details.jsp");
-        rd.forward(request, response);
+        response.sendRedirect("Search-Vehicle-Details.jsp");
     }
 
-    private void addVehicle(HttpServletRequest request, HttpServletResponse response, VehicleService service) throws ServletException, IOException {
+    private void addVehicle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String vehicleID = request.getParameter("vehicleID");
         String vehicleName = request.getParameter("vehicleName");
         String image = request.getParameter("image");
         String category = request.getParameter("category");
-
-        Vehicle vehicle = new Vehicle(0, vehicleName, image, category);
-
-        boolean result;
+        int monthFee = 0;
         String message = "";
+
         try {
-            result = service.registerVehicle(vehicle);
-            if (result) {
-                message = "Vehicle " + vehicleName + " has been successfully added!";
-            } else {
-                message = "Failed to add the vehicle! Vehicle: " + vehicleName;
+            monthFee = Integer.parseInt(request.getParameter("monthFee"));
+        } catch (NumberFormatException e) {
+            message = "Invalid month fee. Please enter a valid number.";
+        }
+
+        if (vehicleID == null || vehicleID.trim().isEmpty() || vehicleName == null || category == null) {
+            message = "All fields are required.";
+        } else {
+            try {
+                Vehicle vehicle = new Vehicle(vehicleID, vehicleName, image, category, monthFee);
+                boolean result = vehicleService.registerVehicle(vehicle);
+                message = result ? "Vehicle " + vehicleName + " added successfully!" : "Failed to add vehicle.";
+            } catch (ClassNotFoundException | SQLException e) {
+                message = "Error adding vehicle: " + e.getMessage();
             }
-        } catch (ClassNotFoundException | SQLException e) {
-            message = e.getMessage();
         }
 
         request.setAttribute("message", message);
-
-        RequestDispatcher rd = request.getRequestDispatcher("Add-Vehicle-Details.jsp");
-        rd.forward(request, response);
+        response.sendRedirect("Add-Vehicle-Details.jsp");
     }
 
-    private void deleteVehicle(HttpServletRequest request, HttpServletResponse response, VehicleService service) throws ServletException, IOException {
-        int vehicleId = Integer.parseInt(request.getParameter("vehicleId"));
-
-        boolean result;
+    private void deleteVehicle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String vehicleId = request.getParameter("vehicleId");
         String message = "";
-        try {
-            result = service.deleteVehicle(vehicleId);
-            if (result) {
-                message = "Vehicle ID " + vehicleId + " has been successfully deleted!";
-            } else {
-                message = "Failed to delete the vehicle! Vehicle ID: " + vehicleId;
+
+        if (vehicleId == null || vehicleId.trim().isEmpty()) {
+            message = "Vehicle ID is required for deletion.";
+        } else {
+            try {
+                boolean result = vehicleService.deleteVehicle(vehicleId);
+                message = result ? "Vehicle ID " + vehicleId + " deleted successfully!" : "Failed to delete vehicle.";
+            } catch (ClassNotFoundException | SQLException e) {
+                message = "Error deleting vehicle: " + e.getMessage();
             }
-        } catch (ClassNotFoundException | SQLException e) {
-            message = e.getMessage();
         }
 
         HttpSession session = request.getSession();
-
-        try {
-            List<Vehicle> vehicleList = service.getAllVehicles();
-            session.setAttribute("vehicleList", vehicleList);
-        } catch (ClassNotFoundException | SQLException e) {
-            message = e.getMessage();
-        }
-
         session.setAttribute("message", message);
         response.sendRedirect("VehicleDashboard.jsp");
     }
