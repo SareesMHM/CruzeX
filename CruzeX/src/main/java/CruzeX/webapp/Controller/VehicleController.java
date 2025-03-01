@@ -110,19 +110,22 @@ public class VehicleController extends HttpServlet {
         String image = request.getParameter("image");
         String category = request.getParameter("category");
         int monthFee = 0;
+        int driverID = 0;
         String message = "";
 
         try {
             monthFee = Integer.parseInt(request.getParameter("monthFee"));
+             driverID = Integer.parseInt(request.getParameter("driverID"));
+
         } catch (NumberFormatException e) {
-            message = "Invalid month fee. Please enter a valid number.";
+            message = "Invalid input for month fee or driver ID.";
         }
 
         if (vehicleId == null || vehicleId.trim().isEmpty() || vehicleName == null || category == null) {
             message = "All fields are required.";
         } else {
             try {
-                Vehicle vehicle = new Vehicle(vehicleId, vehicleName, image, category, monthFee);
+                Vehicle vehicle = new Vehicle(vehicleId, vehicleName, image, category, monthFee,driverID);
                 boolean result = vehicleService.editVehicle(vehicle);
                 message = result ? "Vehicle " + vehicleId + " updated successfully!" : "Failed to update vehicle.";
             } catch (ClassNotFoundException | SQLException e) {
@@ -140,19 +143,21 @@ public class VehicleController extends HttpServlet {
         String image = request.getParameter("image");
         String category = request.getParameter("category");
         int monthFee = 0;
+        int driverID = 0;
         String message = "";
 
         try {
             monthFee = Integer.parseInt(request.getParameter("monthFee"));
+             driverID = Integer.parseInt(request.getParameter("driverID"));
         } catch (NumberFormatException e) {
-            message = "Invalid month fee. Please enter a valid number.";
+            message = "Invalid input for month fee or driver ID.";
         }
 
         if (vehicleID == null || vehicleID.trim().isEmpty() || vehicleName == null || category == null) {
             message = "All fields are required.";
         } else {
             try {
-                Vehicle vehicle = new Vehicle(vehicleID, vehicleName, image, category, monthFee);
+                Vehicle vehicle = new Vehicle(vehicleID, vehicleName, image, category, monthFee, driverID);
                 boolean result = vehicleService.registerVehicle(vehicle);
                 message = result ? "Vehicle " + vehicleName + " added successfully!" : "Failed to add vehicle.";
             } catch (ClassNotFoundException | SQLException e) {
@@ -184,3 +189,4 @@ public class VehicleController extends HttpServlet {
         response.sendRedirect("VehicleDashboard.jsp");
     }
 }
+

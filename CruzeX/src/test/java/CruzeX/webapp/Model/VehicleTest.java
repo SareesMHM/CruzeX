@@ -8,7 +8,7 @@ class VehicleTest {
 
     @Test
     void testGettersAndSetters() {
-        Vehicle vehicle = new Vehicle("1", "Car", "image.jpg", "SUV",2000);
+        Vehicle vehicle = new Vehicle("1", "Car", "image.jpg", "SUV",2000,1);
 
         vehicle.setVehicleID("2");
         assertEquals("2", vehicle.getVehicleID());
@@ -25,7 +25,7 @@ class VehicleTest {
 
     @Test
     void testConstructor() {
-        Vehicle vehicle = new Vehicle("1", "Car", "image.jpg", "SUV",2000);
+        Vehicle vehicle = new Vehicle("1", "Car", "image.jpg", "SUV",2000,1);
 
         assertEquals("1", vehicle.getVehicleID());
         assertEquals("Car", vehicle.getVehicleName());

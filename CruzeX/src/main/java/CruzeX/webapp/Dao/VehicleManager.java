@@ -25,7 +25,7 @@ public class VehicleManager {
     // Add a new Vehicle
     public boolean addVehicle(Vehicle vehicle) throws ClassNotFoundException, SQLException {
         Connection connection = getConnection();
-        String query = "INSERT INTO vehicle (VehicleID, VehicleName, Image, Category, MonthFee) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO vehicle (VehicleID, VehicleName, Image, Category, MonthFee,DriverID) VALUES (?, ?, ?, ?, ?, ?)";
 
         PreparedStatement ps = connection.prepareStatement(query);
         ps.setString(1,vehicle.getVehicleID());
@@ -33,6 +33,7 @@ public class VehicleManager {
         ps.setString(3, vehicle.getImage());
         ps.setString(4, vehicle.getCategory());
         ps.setInt(5, vehicle.getMonthFee());
+        ps.setInt(6, vehicle.getDriverID());
 
         int result = ps.executeUpdate();
         ps.close();
@@ -57,7 +58,9 @@ public class VehicleManager {
                 rs.getString("VehicleName"),
                 rs.getString("Image"),
                 rs.getString("Category"),
-                rs.getInt("MonthFee"));
+                rs.getInt("MonthFee"),
+            rs.getInt("DriverID"));
+                 
         }
 
         ps.close();
@@ -81,7 +84,9 @@ public class VehicleManager {
                 rs.getString("VehicleName"),
                 rs.getString("Image"),
                 rs.getString("Category"),
-                rs.getInt("MonthFee"));
+                rs.getInt("MonthFee"),
+                    rs.getInt("DriverID")
+            );
             vehicleList.add(vehicle);
         }
     } catch (SQLException e) {
@@ -95,7 +100,7 @@ public class VehicleManager {
     // Update a vehicle
     public boolean updateVehicle(Vehicle vehicle) throws ClassNotFoundException, SQLException {
         Connection connection = getConnection();
-        String query = "UPDATE vehicle SET VehicleName = ?, Image = ?, Category = ?, MonthFee = ? WHERE VehicleID = ?";
+        String query = "UPDATE vehicle SET VehicleName = ?, Image = ?, Category = ?, MonthFee = ?, DriverID = ? WHERE VehicleID = ?";
 
         PreparedStatement ps = connection.prepareStatement(query);
         ps.setString(1, vehicle.getVehicleName());
@@ -103,6 +108,7 @@ public class VehicleManager {
         ps.setString(3, vehicle.getCategory());
         ps.setInt(4, vehicle.getMonthFee());
         ps.setString(5, vehicle.getVehicleID());
+        ps.setInt(6, vehicle.getDriverID());
 
         int result = ps.executeUpdate();
         ps.close();

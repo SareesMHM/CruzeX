@@ -100,6 +100,10 @@
                             <label for="monthFee" class="form-label">Month Fee:</label>
                             <input type="text" class="form-control" id="monthFee" name="monthFee"/>
                         </div>
+                        <div class="mb-3">
+            <label for="driverID" class="form-label">Assign Driver:</label>
+            <input type="text" class="form-control" id="driverID" name="driverID" />
+        </div>
                         <input type="hidden" name="type" value="add"/>
                         <div class="mb-3">
                             <button type="submit" class="btn btn-primary btn-register">Register</button>

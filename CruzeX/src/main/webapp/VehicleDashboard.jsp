@@ -65,6 +65,7 @@
                     <th>Image</th>
                     <th>Category</th>
                     <th>Month Fee</th>
+                    <th>Driver ID</th>
                     <th>Remove from List</th>
                 </tr>
             </thead>         
@@ -79,6 +80,7 @@
                                 <td><img src="img/car/${vehicle.image}" width="100" onerror="this.src='default.jpg';"></td>
                                 <td>${vehicle.category}</td>
                                 <td>${vehicle.monthFee}</td>
+                                <td>${vehicle.driverID}</td>
                                 <td>
                                     <form method="post" action="VehicleController">
                                         <input type="hidden" name="vehicleId" value="${vehicle.vehicleID}" />

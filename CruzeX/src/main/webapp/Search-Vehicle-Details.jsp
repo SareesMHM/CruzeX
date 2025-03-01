@@ -71,7 +71,10 @@
                     <input type="file" id="image" name="image" >
                     <br/>
                      <label for="category">Month Fee:</label>
-                    <input type="text" class="form-control" id="monthFee" name="monthFee" value="${not empty vehicle ? vehicle.monthFee : ''}"/>
+                     <input type="number" class="form-control" id="monthFee" name="monthFee" value="${not empty vehicle ? vehicle.monthFee : ''}"/>
+                    <br/>
+                    <label for="category">Driver ID:</label>
+                    <input type="number" class="form-control" id="driverID" name="driverID" value="${not empty vehicle ? vehicle.driverID : ''}"/>
                     <br/>
                     <input type="hidden" name="type" value="update">
                     <button type="submit" class="btn btn-warning">Update</button>            
