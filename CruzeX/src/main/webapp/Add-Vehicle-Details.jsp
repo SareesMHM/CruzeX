@@ -55,7 +55,7 @@
             <a class="link-warning nav-link px-5 mx-5" aria-current="page" href="AdminHomePage.jsp"> << Go to Home</a>
         </li>
         <li class="nav-item">
-            <a class="link-secondary  nav-link " aria-current="page" href="VehicleDashboard.jsp">Store</a>
+            <a class="link-secondary  nav-link " aria-current="page" href="VehicleController">Store</a>
         </li>
         <li class="nav-item">
             <a class="link-secondary nav-link " href="Search-Vehicle-Details.jsp">Search vehicle & Update</a>

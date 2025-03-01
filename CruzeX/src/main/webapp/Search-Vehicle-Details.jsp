@@ -58,7 +58,7 @@
                 <br/>
                 <form method="post" action="VehicleController">
                     <label for="vehicleId">Vehicle ID:</label>
-                    <input type="text" readonly class="form-control" id="vehicleId" name="vehicleId" value="${not empty vehicle ? vehicle.vehicleId : ''}"/>
+                    <input type="text" readonly class="form-control" id="vehicleId" name="vehicleId" value="${not empty vehicle ? vehicle.vehicleID : ''}"/>
                     <br/>
                     <label for="vehicleName">Vehicle Name:</label>
                     <input type="text" class="form-control" id="vehicleName" name="vehicleName" value="${not empty vehicle ? vehicle.vehicleName : ''}"/>
@@ -68,13 +68,21 @@
                     <br/>
                     <label for="image">Image URL:</label>
                     <input type="text" class="form-control" id="image" name="image" value="${not empty vehicle ? vehicle.image : ''}"/>
-                    <input type="file" name="type" value="update"/>
+                    <input type="file" id="image" name="image" >
                     <br/>
                      <label for="category">Month Fee:</label>
                     <input type="text" class="form-control" id="monthFee" name="monthFee" value="${not empty vehicle ? vehicle.monthFee : ''}"/>
                     <br/>
+                    <input type="hidden" name="type" value="update">
                     <button type="submit" class="btn btn-warning">Update</button>            
                 </form> 
+                    
+                <script>
+                    var message = "<%= request.getAttribute("message") %>";
+                    if (message) {
+                        alert(message);
+                    }
+                </script>
             </div>
         </div>      
     </div>

@@ -33,30 +33,55 @@ public class VehicleController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String type = request.getParameter("type");
 
-        if ("update".equals(type)) {
-            updateVehicle(request, response);
-        } else if ("add".equals(type)) {
-            addVehicle(request, response);
-        } else if ("delete".equals(type)) {
-            deleteVehicle(request, response);
+        if (null != type) switch (type) {
+            case "update":
+                updateVehicle(request, response);
+                break;
+            case "add":
+                addVehicle(request, response);
+                break;
+            case "delete":
+                deleteVehicle(request, response);
+                break;
+            default:
+                break;
         }
     }
 
-    private void getAllVehicles(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Vehicle> vehicleList = new ArrayList<>();
-        String message = "";
+   
+//    private void getAllVehicles(HttpServletRequest request, HttpServletResponse response) throws IOException {
+//        HttpSession session = request.getSession();
+//        List<Vehicle> vehicleList;
+//        String message = "";
+//
+//        try {
+//            vehicleList = vehicleService.getAllVehicles();
+//            session.setAttribute("vehicleList", vehicleList);
+//        } catch (ClassNotFoundException | SQLException e) {
+//            message = "Error fetching vehicles: " + e.getMessage();
+//            session.setAttribute("message", message);
+//        }
+//        session.setAttribute("vehiclesLoaded", true);
+//
+//        //response.sendRedirect("VehicleDashboard.jsp"); // Redirect instead of forwarding
+//        response.sendRedirect("VehicleDashboard.jsp");
+//
+//    }
+    
+    private void getAllVehicles(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    HttpSession session = request.getSession();
+    List<Vehicle> vehicleList;
+    String message = "";
 
-        try {
-            vehicleList = vehicleService.getAllVehicles();
-        } catch (ClassNotFoundException | SQLException e) {
-            message = "Error fetching vehicles: " + e.getMessage();
-        }
-
-        request.setAttribute("message", message);
-        request.setAttribute("vehicleList", vehicleList);
-        RequestDispatcher rd = request.getRequestDispatcher("VehicleDashboard.jsp");
-        rd.forward(request, response);
+    try {
+        vehicleList = vehicleService.getAllVehicles();
+        session.setAttribute("vehicleList", vehicleList);
+    } catch (ClassNotFoundException | SQLException e) {
+        message = "Error fetching vehicles: " + e.getMessage();
+        session.setAttribute("message", message);
     }
+    response.sendRedirect("VehicleDashboard.jsp");
+}
 
     private void getSpecificVehicle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String vehicleId = request.getParameter("vehicleId");

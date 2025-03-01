@@ -66,13 +66,14 @@ public class VehicleManager {
     }
 
     // Get all vehicles
-    public List<Vehicle> getAllVehicles() throws SQLException, ClassNotFoundException {
-        Connection connection = getConnection();
-        List<Vehicle> vehicleList = new ArrayList<>();
+   public List<Vehicle> getAllVehicles() throws SQLException, ClassNotFoundException {
+    List<Vehicle> vehicleList = new ArrayList<>();
+    String query = "SELECT * FROM vehicle";
 
-        String query = "SELECT * FROM `vehicle`";
-        Statement st = connection.createStatement();
-        ResultSet rs = st.executeQuery(query);
+    // Try-with-resources ensures proper closing of resources
+    try (Connection connection = getConnection();
+         Statement st = connection.createStatement();
+         ResultSet rs = st.executeQuery(query)) {
 
         while (rs.next()) {
             Vehicle vehicle = new Vehicle(
@@ -83,11 +84,13 @@ public class VehicleManager {
                 rs.getInt("MonthFee"));
             vehicleList.add(vehicle);
         }
-
-        st.close();
-        connection.close();
-        return vehicleList;
+    } catch (SQLException e) {
+        e.printStackTrace(); // Replace with logging in production
+        throw e;
     }
+    return vehicleList;
+}
+
 
     // Update a vehicle
     public boolean updateVehicle(Vehicle vehicle) throws ClassNotFoundException, SQLException {

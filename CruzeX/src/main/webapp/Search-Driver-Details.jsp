@@ -27,7 +27,7 @@
                 <a class="link-warning nav-link px-5 mx-5" aria-current="page" href="AdminHomePage.jsp"> << Go to Home</a>
             </li>
             <li class="nav-item">
-                <a class="link-secondary  nav-link " aria-current="page" href="DeiverDashboard.jsp">Store</a>
+                <a class="link-secondary  nav-link " aria-current="page" href="DriverDashboard.jsp">Store</a>
             </li>
             <li class="nav-item">
                 <a class="text-white nav-link " href="Search-Driver-Details.jsp">Search Driver & Update</a>
@@ -44,7 +44,7 @@
                 <!-- Search Driver Section -->
                 <h3>Search Driver</h3>
                 <br/>
-                <form method="get" action="driverController">
+                <form method="get" action="DriverController">
                     Enter Driver ID: <input type="text" name="driverId">
                     <input type="hidden" name="type" value="specific">
                     <button type="submit" class="btn btn-info">Search</button>            
@@ -56,7 +56,7 @@
                 <!-- Edit Driver Section -->
                 <h3>Edit Driver</h3>
                 <br/>
-                <form method="post" action="driverController">
+                <form method="post" action="DriverController">
                     <label for="driverId">Driver ID:</label>
                     <input type="text" readonly class="form-control" id="driverId" name="driverId" value="${not empty driver ? driver.driverID : ''}"/>
                     <br/>
@@ -78,5 +78,11 @@
             </div>
         </div>      
     </div>
+                    <script>
+                    var message = "<%= request.getAttribute("message") %>";
+                    if (message) {
+                        alert(message);
+                    }
+                </script>
 </body>
 </html>

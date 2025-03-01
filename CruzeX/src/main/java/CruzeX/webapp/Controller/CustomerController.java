@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 import CruzeX.webapp.Model.Customer;
 import CruzeX.webapp.Service.CustomerService;
 
-@WebServlet("/customerController")
+@WebServlet("/CustomerController")
 public class CustomerController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -45,6 +45,7 @@ public class CustomerController extends HttpServlet {
     }
 
     private void getAllCustomers(HttpServletRequest request, HttpServletResponse response, CustomerService service) throws ServletException, IOException {
+        HttpSession session = request.getSession();
         String message = "";
         List<Customer> customerList;
 
@@ -53,13 +54,16 @@ public class CustomerController extends HttpServlet {
         } catch (ClassNotFoundException | SQLException e) {
             message = e.getMessage();
             customerList = new ArrayList<>();
+        //}
+
+//        request.setAttribute("message", message);
+//        request.setAttribute("customerList", customerList);
+//
+//        RequestDispatcher rd = request.getRequestDispatcher("CustomerDashboard.jsp");
+//        rd.forward(request, response);
+session.setAttribute("message", message);
         }
-
-        request.setAttribute("message", message);
-        request.setAttribute("customerList", customerList);
-
-        RequestDispatcher rd = request.getRequestDispatcher("CustomerDashboard.jsp");
-        rd.forward(request, response);
+        response.sendRedirect("CustomerDashboard.jsp");
     }
 
     private void getSpecificCustomer(HttpServletRequest request, HttpServletResponse response, CustomerService service) throws ServletException, IOException {

@@ -5,7 +5,16 @@ public class Vehicle {
     private String vehicleName;
     private String image;
     private String category;
+    private String status;
     private int monthFee; // Fixed variable name
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     // Constructor (Updated to include monthFee)
     public Vehicle(String vehicleID, String vehicleName, String image, String category,int monthFee) {
@@ -14,6 +23,7 @@ public class Vehicle {
         this.image = image;
         this.category = category;
         this.monthFee = monthFee;
+        this.status = status;
     }
 
     // Getters and Setters

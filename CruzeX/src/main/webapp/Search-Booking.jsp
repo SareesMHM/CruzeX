@@ -31,13 +31,13 @@
             <a class="link-warning nav-link px-5 mx-5" aria-current="page" href="CustomerHomePage.jsp"> << Go to Home</a>
         </li>
         <li class="nav-item">
-            <a class="link-secondary nav-link" href="BookingDashboard.jsp">Store</a>
+            <a class="link-secondary nav-link" href="BookingController">Store</a>
         </li>
         <li class="nav-item">
             <a class="text-white nav-link" href="Search-Booking.jsp">Search Specific & Update</a>
         </li>
         <li class="nav-item">
-            <a class="link-secondary nav-link" href="Booking.jsp">Booking</a>
+            <a class="link-secondary nav-link" href="Add-Booking.jsp">Booking</a>
         </li>
     </ul>
     <br/>
@@ -48,7 +48,7 @@
             <!-- Search Booking -->
             <div class="col-md-6">
                 <h3>Search Booking</h3>
-                <form method="get" action="bookingController">
+                <form method="get" action="BookingController">
                     <div class="form-group">
                         Enter Booking ID: 
                         <input type="text" class="form-control" name="bookingID">
@@ -64,7 +64,7 @@
             <!-- Edit Booking -->
             <div class="col-md-6">
                 <h3>Edit Booking</h3>
-                <form method="post" action="bookingController">
+                <form method="post" action="BookingController">
                     <label for="bookingID">Booking ID:</label>
                     <input type="text" readonly class="form-control" id="bookingID" name="bookingID" value="${not empty booking ? booking.bookingID : ''}"/>
                     <br/>

@@ -65,7 +65,7 @@
     <div class="container">
         <div class="form-group p-5 mx-5 mb-4">
             <h3>Register Booking</h3>
-            <form method="post" action="bookingController">
+            <form method="post" action="BookingController">
                 <br/>
                 <label for="customerID">Customer ID:</label>
                 <input type="number" class="form-control mt-2" id="customerID" name="customerID"/>
@@ -86,7 +86,7 @@
                 <input type="text" class="form-control mt-2" id="destination" name="destination"/>
                 <br/>
                 
-                
+                <input type="hidden" name="type" value="add"/>
                 <button type="submit" class="btn btn-primary">Schedule</button>
             </form>
         </div>

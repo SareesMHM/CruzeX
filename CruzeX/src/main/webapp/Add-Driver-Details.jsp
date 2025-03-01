@@ -40,7 +40,7 @@
             <a class="link-warning nav-link px-5 mx-5" aria-current="page" href="AdminHomePage.jsp"> << Go to Home</a>
         </li>
         <li class="nav-item">
-            <a class="link-secondary nav-link" href="DeiverDashboard.jsp">Store</a>
+            <a class="link-secondary nav-link" href="DriverDashboard.jsp">Store</a>
         </li>
         <li class="nav-item">
             <a class="link-secondary nav-link" href="Search-Driver-Details.jsp">Search Specific & Update</a>

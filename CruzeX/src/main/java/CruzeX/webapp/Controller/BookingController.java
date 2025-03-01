@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 import CruzeX.webapp.Model.Booking;
 import CruzeX.webapp.Service.BookingService;
 
-@WebServlet("/bookingController")
+@WebServlet("/BookingController")
 public class BookingController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 

@@ -23,6 +23,9 @@ public class Driver {
         this.licenseNumber = licenseNumber;
         this.email = email;
     }
+    
+    public Driver() {
+    }
 
     // Getters and Setters for the fields
 

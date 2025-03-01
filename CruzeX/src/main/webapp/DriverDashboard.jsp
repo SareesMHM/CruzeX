@@ -32,7 +32,7 @@
             <a class="link-warning nav-link px-5 mx-5" aria-current="page" href="AdminHomePage.jsp"> << Go to Home</a>
         </li>
         <li class="nav-item">
-            <a class="text-white nav-link" aria-current="page" href="DriverDashboard.jsp">Store</a>
+            <a class="text-white nav-link" aria-current="page" href="DriverController">Store</a>
         </li>
         <li class="nav-item">
             <a class="link-secondary nav-link" href="Search-Driver-Details.jsp">Search Specific & Update</a>
@@ -42,7 +42,9 @@
         </li>
     </ul>
     <br/>
-    <p>${message}</p>
+     <c:if test="${not empty message}">
+        <div class="alert alert-info text-center">${message}</div>
+    </c:if>
     <br/>
     <div class="container">
         <table class="table table-striped">
@@ -57,7 +59,9 @@
                 </tr>
             </thead>
             <tbody>
-                <c:forEach var="driver" items="${driverList}">
+                <c:choose>
+                    <c:when test="${not empty sessionScope.driverList}">
+                <c:forEach var="driver" items="${sessionScope.driverList}">
                     <tr>
                         <td>${driver.driverID}</td>
                         <td>${driver.firstName}</td>
@@ -73,10 +77,22 @@
                         </td>
                     </tr>
                 </c:forEach>
+                     </c:when>
+                    <c:otherwise>
+                        <tr><td colspan="6" class="text-center">No vehicles found.</td></tr>
+                    </c:otherwise>
+                </c:choose>
             </tbody>
         </table>
     </div>
 </div>
 <br/>
+<!-- Improved JavaScript message handling -->
+<script>
+    var message = "<%= request.getAttribute("message") != null ? request.getAttribute("message") : "" %>";
+    if (message.trim() !== "") {
+        alert(message);
+    }
+</script>
 </body>
 </html>
