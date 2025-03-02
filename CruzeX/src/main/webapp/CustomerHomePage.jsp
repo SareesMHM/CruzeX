@@ -23,7 +23,7 @@
           <a class="nav-link active mx-0 mx-md-3 fs-6" aria-current="page" href="CruzeXHome.jsp">Home</a>
           <a class="nav-link mx-0 mx-md-3 fs-6" href="Add-Booking.jsp">Add Booking</a>
         <a class="nav-link mx-0 mx-md-3 fs-6" href="PaymentDashboard.jsp">Make Payment</a>
-        <a class="nav-link mx-0 mx-md-3 fs-6" href="VehicleController">View Vehicle</a>
+        <a class="nav-link mx-0 mx-md-3 fs-6" href="VehicleController?type=customer">View Vehicle</a>
         
         
       </div>

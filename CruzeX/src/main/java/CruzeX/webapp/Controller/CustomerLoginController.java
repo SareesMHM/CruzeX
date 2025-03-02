@@ -1,6 +1,7 @@
 package CruzeX.webapp.Controller;
 
 
+import CruzeX.webapp.Model.Customer;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -12,19 +13,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import CruzeX.webapp.Service.CustomerService;
+import java.util.List;
+import javax.servlet.http.HttpSession;
 
 @WebServlet("/CustomerLoginController")
 public class CustomerLoginController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        HttpSession session = request.getSession();
 
         try {
             // You should implement your logic to validate the credentials here
             // For simplicity, let's assume you have a method in your service to validate credentials
-            boolean isValid = CustomerService.getCustomerServiceInstance().validateCustomerCredentials(username, password);
+           Customer customer = CustomerService.getCustomerServiceInstance().validateCustomerCredentials(username, password);
+           session.setAttribute("customerId", customer.getCustomerID());
 
-            if (isValid) {
+            if (customer!=null) {
                 // If credentials are valid, redirect the patient to Patient.jsp
                 response.sendRedirect("CustomerHomePage.jsp");
             } else {

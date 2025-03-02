@@ -1,18 +1,15 @@
 package CruzeX.webapp.Dao;
 
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import CruzeX.webapp.Model.Payment;
 
 public class PaymentManager {
-
     public DbConnector getDbConnector() {
         DbConnectorFactory factory = new MySqlDbConnectorFactoryImpl();
         return factory.getDbConnector();
@@ -23,115 +20,92 @@ public class PaymentManager {
         return connector.getDbConnection();
     }
 
+    // ✅ Add a new payment
     public boolean addPayment(Payment payment) throws ClassNotFoundException, SQLException {
-        Connection connection = getConnection();
-        String query = "INSERT INTO payment (Price, Cardholdername, CardNumber, ExpiryDate, CVCnumber, Paymentdate, PatientID) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO payment (BookingID, CustomerID, Amount, CardNumber, ExpiryDate, CVCNumber) VALUES (?, ?, ?, ?, ?, ?)";
 
-        PreparedStatement ps = connection.prepareStatement(query);
-        ps.setDouble(1, payment.getPrice());
-        ps.setString(2, payment.getCardholderName());
-        ps.setInt(3, payment.getCardNumber());
-        ps.setString(4, payment.getExpiryDate());
-        ps.setInt(5, payment.getCvcNumber());
-        ps.setString(6, payment.getPaymentDate());
-        ps.setInt(7, payment.getPatientId());
+        try (Connection connection = getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
 
-        int result = ps.executeUpdate();
+            ps.setInt(1, payment.getBookingId());
+            ps.setInt(2, payment.getCustomerId());
+            ps.setDouble(3, payment.getPrice());
+            ps.setString(4, payment.getCardNumber());
+            ps.setString(5, payment.getExpiryDate());
+            ps.setString(6, payment.getCvcNumber());
 
-        ps.close();
-        connection.close();
-        return result > 0;
+            return ps.executeUpdate() > 0;
+        }
     }
 
-    public Payment getSpecificPayment(int paymentId) throws SQLException, ClassNotFoundException {
-        Connection connection = getConnection();
-        String query = "SELECT * FROM payment WHERE PaymentId = ?";
+    // ✅ Retrieve a specific payment by ID
+    public Payment getPaymentById(int paymentId) throws SQLException, ClassNotFoundException {
+        String query = "SELECT * FROM payment WHERE PaymentID = ?";
+        Payment payment = null;
 
-        PreparedStatement ps = connection.prepareStatement(query);
-        ps.setInt(1, paymentId);
+        try (Connection connection = getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
 
-        ResultSet rs = ps.executeQuery();
-        Payment payment = new Payment();
+            ps.setInt(1, paymentId);
+            ResultSet rs = ps.executeQuery();
 
-        while (rs.next()) {
-            payment.setPaymentId(rs.getInt("PaymentId"));
-            payment.setPrice(rs.getDouble("Price"));
-            payment.setCardholderName(rs.getString("Cardholdername"));
-            payment.setCardNumber(rs.getInt("CardNumber"));
-            payment.setExpiryDate(rs.getString("ExpiryDate"));
-            payment.setCvcNumber(rs.getInt("CVCnumber"));
-            payment.setPaymentDate(rs.getString("Paymentdate"));
-            payment.setPatientId(rs.getInt("PatientID"));
+            if (rs.next()) {
+                payment = new Payment(
+                    rs.getInt("PaymentID"),
+                         rs.getInt("CustomerId"),
+                    rs.getDouble("Amount"),
+                    rs.getString("CardholderName"),
+                    rs.getString("CardNumber"),
+                    rs.getString("ExpiryDate"),
+                    rs.getString("CVCNumber"),
+                    rs.getString("PaymentDate"),
+                    rs.getInt("BookingID")
+                       
+                );
+            }
         }
-
-        ps.close();
-        connection.close();
         return payment;
     }
 
+    // ✅ Retrieve all payments
     public List<Payment> getAllPayments() throws SQLException, ClassNotFoundException {
-        Connection connection = getConnection();
         List<Payment> paymentList = new ArrayList<>();
-
         String query = "SELECT * FROM payment";
 
-        Statement st = connection.createStatement();
+        try (Connection connection = getConnection();
+             PreparedStatement ps = connection.prepareStatement(query);
+             ResultSet rs = ps.executeQuery()) {
 
-        ResultSet rs = st.executeQuery(query);
-
-        while (rs.next()) {
-            Payment payment = new Payment();
-            payment.setPaymentId(rs.getInt("PaymentId"));
-            payment.setPrice(rs.getDouble("Price"));
-            payment.setCardholderName(rs.getString("Cardholdername"));
-            payment.setCardNumber(rs.getInt("CardNumber"));
-            payment.setExpiryDate(rs.getString("ExpiryDate"));
-            payment.setCvcNumber(rs.getInt("CVCnumber"));
-            payment.setPaymentDate(rs.getString("Paymentdate"));
-            payment.setPatientId(rs.getInt("PatientID"));
-
-            paymentList.add(payment);
+            while (rs.next()) {
+                Payment payment = new Payment(
+                    rs.getInt("PaymentID"),
+                        rs.getInt("CustomerId"),
+                    rs.getDouble("Amount"),
+                    rs.getString("CardholderName"),
+                    rs.getString("CardNumber"),
+                    rs.getString("ExpiryDate"),
+                    rs.getString("CVCNumber"),
+                    rs.getString("PaymentDate"),
+                    rs.getInt("BookingID")
+                        
+                        
+                        
+                );
+                paymentList.add(payment);
+            }
         }
-
-        st.close();
-        connection.close();
-
         return paymentList;
     }
 
-    public boolean updatePayment(Payment payment) throws ClassNotFoundException, SQLException {
-        Connection connection = getConnection();
-        String query = "UPDATE payment SET Price = ?, Cardholdername = ?, CardNumber = ?, ExpiryDate = ?, CVCnumber = ?, Paymentdate = ?, PatientID = ? WHERE PaymentId = ?";
-
-        PreparedStatement ps = connection.prepareStatement(query);
-        ps.setDouble(1, payment.getPrice());
-        ps.setString(2, payment.getCardholderName());
-        ps.setInt(3, payment.getCardNumber());
-        ps.setString(4, payment.getExpiryDate());
-        ps.setInt(5, payment.getCvcNumber());
-        ps.setString(6, payment.getPaymentDate());
-        ps.setInt(7, payment.getPatientId());
-        ps.setInt(8, payment.getPaymentId());
-
-        int result = ps.executeUpdate();
-
-        ps.close();
-        connection.close();
-        return result > 0;
-    }
-
+    // ✅ Delete a payment by ID
     public boolean deletePayment(int paymentId) throws ClassNotFoundException, SQLException {
-        Connection connection = getConnection();
-        String query = "DELETE FROM payment WHERE PaymentId = ?";
+        String query = "DELETE FROM payment WHERE PaymentID = ?";
 
-        PreparedStatement ps = connection.prepareStatement(query);
-        ps.setInt(1, paymentId);
+        try (Connection connection = getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
 
-        int result = ps.executeUpdate();
-
-        ps.close();
-        connection.close();
-        return result > 0;
+            ps.setInt(1, paymentId);
+            return ps.executeUpdate() > 0;
+        }
     }
 }
-

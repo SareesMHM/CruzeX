@@ -1,6 +1,8 @@
 package CruzeX.webapp.Controller;
 
+import CruzeX.webapp.Model.Driver;
 import CruzeX.webapp.Model.Vehicle;
+import CruzeX.webapp.Service.DriverService;
 import CruzeX.webapp.Service.VehicleService;
 
 import javax.servlet.RequestDispatcher;
@@ -12,76 +14,61 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/VehicleController")
 public class VehicleController extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private VehicleService vehicleService = VehicleService.getVehicleServiceInstance();
+    private final VehicleService vehicleService = VehicleService.getVehicleServiceInstance();
+    private final DriverService driverService = DriverService.getDriverServiceInstance();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String type = request.getParameter("type");
 
-        if ("specific".equals(type)) {
-            getSpecificVehicle(request, response);
+        if ("customer".equals(type)) {
+            getAllVehicles(request, response, "CustomerViewVehicle.jsp");
+        } else if ("loadDrivers".equals(type)) {
+            loadDrivers(request, response);
         } else {
-            getAllVehicles(request, response);
+            getAllVehicles(request, response, "VehicleDashboard.jsp");
         }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String type = request.getParameter("type");
 
-        if (null != type) switch (type) {
-            case "update":
-                updateVehicle(request, response);
-                break;
-            case "add":
-                addVehicle(request, response);
-                break;
-            case "delete":
-                deleteVehicle(request, response);
-                break;
-            default:
-                break;
+        if (type != null) {
+            switch (type) {
+                case "update":
+                    updateVehicle(request, response);
+                    break;
+                case "add":
+                    addVehicle(request, response);
+                    break;
+                case "delete":
+                    deleteVehicle(request, response);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
-   
-//    private void getAllVehicles(HttpServletRequest request, HttpServletResponse response) throws IOException {
-//        HttpSession session = request.getSession();
-//        List<Vehicle> vehicleList;
-//        String message = "";
-//
-//        try {
-//            vehicleList = vehicleService.getAllVehicles();
-//            session.setAttribute("vehicleList", vehicleList);
-//        } catch (ClassNotFoundException | SQLException e) {
-//            message = "Error fetching vehicles: " + e.getMessage();
-//            session.setAttribute("message", message);
-//        }
-//        session.setAttribute("vehiclesLoaded", true);
-//
-//        //response.sendRedirect("VehicleDashboard.jsp"); // Redirect instead of forwarding
-//        response.sendRedirect("VehicleDashboard.jsp");
-//
-//    }
-    
-    private void getAllVehicles(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    HttpSession session = request.getSession();
-    List<Vehicle> vehicleList;
-    String message = "";
+    private void getAllVehicles(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        List<Vehicle> vehicleList;
+        String message = "";
 
-    try {
-        vehicleList = vehicleService.getAllVehicles();
-        session.setAttribute("vehicleList", vehicleList);
-    } catch (ClassNotFoundException | SQLException e) {
-        message = "Error fetching vehicles: " + e.getMessage();
-        session.setAttribute("message", message);
+        try {
+            vehicleList = vehicleService.getAllVehicles();
+            session.setAttribute("vehicleList", vehicleList);
+        } catch (ClassNotFoundException | SQLException e) {
+            message = "Error fetching vehicles: " + e.getMessage();
+            session.setAttribute("message", message);
+        }
+
+        response.sendRedirect(page);
     }
-    response.sendRedirect("VehicleDashboard.jsp");
-}
 
     private void getSpecificVehicle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String vehicleId = request.getParameter("vehicleId");
@@ -115,8 +102,7 @@ public class VehicleController extends HttpServlet {
 
         try {
             monthFee = Integer.parseInt(request.getParameter("monthFee"));
-             driverID = Integer.parseInt(request.getParameter("driverID"));
-
+            driverID = Integer.parseInt(request.getParameter("driverID"));
         } catch (NumberFormatException e) {
             message = "Invalid input for month fee or driver ID.";
         }
@@ -125,7 +111,7 @@ public class VehicleController extends HttpServlet {
             message = "All fields are required.";
         } else {
             try {
-                Vehicle vehicle = new Vehicle(vehicleId, vehicleName, image, category, monthFee,driverID);
+                Vehicle vehicle = new Vehicle(vehicleId, vehicleName, image, category, monthFee, driverID);
                 boolean result = vehicleService.editVehicle(vehicle);
                 message = result ? "Vehicle " + vehicleId + " updated successfully!" : "Failed to update vehicle.";
             } catch (ClassNotFoundException | SQLException e) {
@@ -148,7 +134,7 @@ public class VehicleController extends HttpServlet {
 
         try {
             monthFee = Integer.parseInt(request.getParameter("monthFee"));
-             driverID = Integer.parseInt(request.getParameter("driverID"));
+            driverID = Integer.parseInt(request.getParameter("driverID"));
         } catch (NumberFormatException e) {
             message = "Invalid input for month fee or driver ID.";
         }
@@ -188,5 +174,18 @@ public class VehicleController extends HttpServlet {
         session.setAttribute("message", message);
         response.sendRedirect("VehicleDashboard.jsp");
     }
-}
 
+    private void loadDrivers(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        try {
+            List<Driver> driverList = driverService.getAllDrivers();
+            session.setAttribute("driverList", driverList);
+            response.sendRedirect("Add-Vehicle-Details.jsp");
+//            RequestDispatcher dispatcher = request.getRequestDispatcher("Add-Vehicle-Details.jsp");
+//            dispatcher.forward(request, response);
+        } catch (ClassNotFoundException | SQLException e) {
+            request.setAttribute("message", "Error fetching drivers: " + e.getMessage());
+            response.sendRedirect("Add-Vehicle-Details.jsp");
+        }
+    }
+}

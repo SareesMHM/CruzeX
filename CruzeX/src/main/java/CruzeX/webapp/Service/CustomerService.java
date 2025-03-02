@@ -44,7 +44,7 @@ public class CustomerService {
         return getCustomerManager().deleteCustomer(customerID);
     }
 
-    public boolean validateCustomerCredentials(String username, String password) throws ClassNotFoundException, SQLException {
+    public Customer validateCustomerCredentials(String username, String password) throws ClassNotFoundException, SQLException {
         return getCustomerManager().validateCustomerCredentials(username, password);
     }
 

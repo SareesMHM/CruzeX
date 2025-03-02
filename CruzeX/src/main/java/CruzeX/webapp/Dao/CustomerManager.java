@@ -10,6 +10,7 @@ import java.util.List;
 
 import CruzeX.webapp.Model.Customer;
 import CruzeX.webapp.Model.Customer;
+import javax.servlet.http.HttpSession;
 
 public class CustomerManager {
 
@@ -129,16 +130,28 @@ public class CustomerManager {
         return result > 0;
     }
     
-    public boolean validateCustomerCredentials(String username, String password) throws ClassNotFoundException, SQLException {
+    public Customer validateCustomerCredentials(String username, String password) throws ClassNotFoundException, SQLException {
         Connection connection = getConnection();
+        Customer customer = new Customer();
         String query = "SELECT * FROM customer WHERE CustomerUsername = ? AND CustomerPassword = ?";
         PreparedStatement ps = connection.prepareStatement(query);
         ps.setString(1, username);
         ps.setString(2, password);
         ResultSet rs = ps.executeQuery();
-        boolean isValid = rs.next(); // If result set has next, it means credentials are valid
+//        boolean isValid = rs.next(); // If result set has next, it means credentials are valid
+        while (rs.next()) {
+            customer.setCustomerID(rs.getInt("CustomerID"));
+            customer.setCustomerFullName(rs.getString("CustomerFullName"));
+            customer.setCustomerPhoneNumber(rs.getInt("CustomerPhoneNumber"));
+            customer.setDateOfBirth(rs.getString("DateOfBirth"));
+            customer.setCustomerAddress(rs.getString("CustomerAddress"));
+            customer.setGender(rs.getString("Gender"));
+            customer.setCustomerEmail(rs.getString("CustomerEmail"));
+            customer.setCustomerUsername(rs.getString("CustomerUsername"));
+            customer.setCustomerPassword(rs.getString("CustomerPassword"));
+                }
         ps.close();
         connection.close();
-        return isValid;
+        return customer;
     }
 }

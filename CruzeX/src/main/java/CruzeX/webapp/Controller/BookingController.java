@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,44 +18,50 @@ import CruzeX.webapp.Service.BookingService;
 @WebServlet("/BookingController")
 public class BookingController extends HttpServlet {
     private static final long serialVersionUID = 1L;
+    private BookingService bookingService = BookingService.getBookingServiceInstance();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String type = request.getParameter("type");
-        BookingService bookingService = BookingService.getBookingServiceInstance();
 
-        if (type != null && type.equals("specific")) {
-            getSpecificBooking(request, response, bookingService);
+        if ("specific".equals(type)) {
+            getSpecificBooking(request, response);
         } else {
-            getAllBookings(request, response, bookingService);
+            getAllBookings(request, response);
         }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String type = request.getParameter("type");
-        BookingService bookingService = BookingService.getBookingServiceInstance();
 
-        if (type != null && type.equals("update")) {
-            updateBooking(request, response, bookingService);
-        } else if (type != null && type.equals("add")) {
-            addBooking(request, response, bookingService);
-        } else if (type != null && type.equals("delete")) {
-            deleteBooking(request, response, bookingService);
+        if (type != null) {
+            switch (type) {
+                case "update":
+                    updateBooking(request, response);
+                    break;
+                case "add":
+                    addBooking(request, response);
+                    break;
+                case "delete":
+                    deleteBooking(request, response);
+                    break;
+                default:
+                    response.sendRedirect("BookingDashboard.jsp");
+                    break;
+            }
         }
     }
 
-    private void getAllBookings(HttpServletRequest request, HttpServletResponse response,
-            BookingService service) throws ServletException, IOException {
-
-        String message = "";
+    private void getAllBookings(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Booking> bookingList;
+        String message = "";
 
         try {
-            bookingList = service.getAllBookings();
-        } catch (ClassNotFoundException | SQLException e) {
+            bookingList = bookingService.getAllBookings();
+        } catch (Exception e) {
             message = e.getMessage();
-            bookingList = new ArrayList<Booking>();
+            bookingList = new ArrayList<>();
         }
 
         request.setAttribute("message", message);
@@ -66,8 +71,7 @@ public class BookingController extends HttpServlet {
         rd.forward(request, response);
     }
 
-    private void getSpecificBooking(HttpServletRequest request, HttpServletResponse response,
-            BookingService service) throws ServletException, IOException {
+    private void getSpecificBooking(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String bookingIdStr = request.getParameter("bookingID");
         int bookingID;
         Booking booking;
@@ -76,8 +80,8 @@ public class BookingController extends HttpServlet {
         if (bookingIdStr != null && !bookingIdStr.isEmpty()) {
             try {
                 bookingID = Integer.parseInt(bookingIdStr);
-                booking = service.getSpecificBooking(bookingID);
-            } catch (NumberFormatException | ClassNotFoundException | SQLException e) {
+                booking = bookingService.getSpecificBooking(bookingID);
+            } catch (NumberFormatException e) {
                 message = e.getMessage();
                 booking = new Booking();
             }
@@ -93,96 +97,81 @@ public class BookingController extends HttpServlet {
         rd.forward(request, response);
     }
 
-    private void updateBooking(HttpServletRequest request, HttpServletResponse response,
-            BookingService service) throws ServletException, IOException {
-        int bookingID = Integer.parseInt(request.getParameter("bookingID"));
-        int customerID = Integer.parseInt(request.getParameter("customerID"));
-        String bookingDate = request.getParameter("bookingDate");
-        String bookingTime = request.getParameter("bookingTime");
-        String driverName = request.getParameter("driverName");
-        String address = request.getParameter("address");
-        String destination = request.getParameter("destination");
-
-        Booking booking = new Booking(bookingID, customerID, bookingDate, bookingTime, driverName, address, destination);
-
-        boolean result;
-        String message = "";
+    private void updateBooking(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            result = service.editTheBooking(booking);
-            if (result) {
-                message = "Booking " + bookingID + " has been successfully updated!";
-            } else {
-                message = "Failed to update the booking! Booking ID: " + bookingID;
-            }
-        } catch (ClassNotFoundException | SQLException e) {
-            message = e.getMessage();
+            int bookingID = Integer.parseInt(request.getParameter("bookingID"));
+            int customerID = Integer.parseInt(request.getParameter("customerID"));
+            String vehicleID = request.getParameter("vehicleID");
+            int driverID = Integer.parseInt(request.getParameter("driverID"));
+            String bookingDate = request.getParameter("bookingDate");
+            String bookingTime = request.getParameter("bookingTime");
+            String pickupLocation = request.getParameter("pickupLocation");
+            String dropLocation = request.getParameter("dropLocation");
+
+            double distance = Double.parseDouble(request.getParameter("distance"));
+            double monthFee = Double.parseDouble(request.getParameter("monthFee"));
+            double fare = distance * monthFee;  // Total cost calculation
+
+            Booking booking = new Booking(bookingID, customerID, vehicleID, driverID, bookingDate, bookingTime, pickupLocation, dropLocation, distance, fare);
+
+            boolean result = bookingService.editTheBooking(booking);
+            String message = result ? "Booking " + bookingID + " successfully updated!" : "Failed to update the booking!";
+
+            request.setAttribute("message", message);
+            response.sendRedirect("Search-Booking.jsp");
+
+        } catch (Exception e) {
+            request.setAttribute("message", "Error updating booking: " + e.getMessage());
+            response.sendRedirect("Search-Booking.jsp");
         }
-
-        request.setAttribute("message", message);
-
-        RequestDispatcher rd = request.getRequestDispatcher("Search-Booking.jsp");
-        rd.forward(request, response);
     }
 
-    private void addBooking(HttpServletRequest request, HttpServletResponse response,
-            BookingService service) throws ServletException, IOException {
-
-        int customerID = Integer.parseInt(request.getParameter("customerID"));
-        String bookingDate = request.getParameter("bookingDate");
-        String bookingTime = request.getParameter("bookingTime");
-        String driverName = request.getParameter("driverName");
-        String address = request.getParameter("address");
-        String destination = request.getParameter("destination");
-
-        Booking booking = new Booking(customerID, bookingDate, bookingTime, driverName, address, destination);
-
-        boolean result;
-        String message = "";
+    private void addBooking(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            result = service.registerBooking(booking);
-            if (result) {
-                message = "Booking for Customer ID " + customerID + " has been successfully added!";
-            } else {
-                message = "Failed to add the booking for Customer ID " + customerID;
-            }
-        } catch (ClassNotFoundException | SQLException e) {
-            message = e.getMessage();
+            int customerID = Integer.parseInt(request.getParameter("customerID"));
+            String vehicleID = request.getParameter("vehicleID");
+            int driverID = Integer.parseInt(request.getParameter("driverID"));
+            String bookingDate = request.getParameter("bookingDate");
+            String bookingTime = request.getParameter("bookingTime");
+            String pickupLocation = request.getParameter("pickupLocation");
+            String dropLocation = request.getParameter("dropLocation");
+
+            double distance = Double.parseDouble(request.getParameter("distance"));
+            double monthFee = Double.parseDouble(request.getParameter("monthFee"));
+            double fare = distance * monthFee;  // Total cost calculation
+
+            Booking booking = new Booking(customerID, vehicleID, driverID, bookingDate, bookingTime, pickupLocation, dropLocation, distance, fare);
+            int bookingID = bookingService.registerBooking(booking);
+
+            String message = (bookingID > 0) ? "Booking successfully created!" : "Failed to add booking!";
+            request.setAttribute("message", message);
+
+            // Redirect to payment page with booking details
+            response.sendRedirect("Add-Payment.jsp?bookingID=" + bookingID + "&customerID=" + customerID + "&amount=" + fare);
+
+        } catch (Exception e) {
+            request.setAttribute("message", "Error adding booking: " + e.getMessage());
+            response.sendRedirect("Add-Booking.jsp");
         }
-
-        request.setAttribute("message", message);
-
-        RequestDispatcher rd = request.getRequestDispatcher("Add-Booking.jsp");
-        rd.forward(request, response);
     }
 
-    private void deleteBooking(HttpServletRequest request, HttpServletResponse response,
-            BookingService service) throws ServletException, IOException {
-
-        int bookingID = Integer.parseInt(request.getParameter("bookingID"));
-
-        boolean result;
-        String message = "";
+    private void deleteBooking(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            result = service.deleteTheBooking(bookingID);
-            if (result) {
-                message = "Booking with ID " + bookingID + " has been successfully deleted!";
-            } else {
-                message = "Failed to delete the booking with ID " + bookingID;
-            }
-        } catch (ClassNotFoundException | SQLException e) {
-            message = e.getMessage();
-        }
+            int bookingID = Integer.parseInt(request.getParameter("bookingID"));
+            boolean result = bookingService.deleteTheBooking(bookingID);
 
-        HttpSession session = request.getSession();
+            String message = result ? "Booking with ID " + bookingID + " successfully deleted!" : "Failed to delete the booking!";
+            HttpSession session = request.getSession();
+            session.setAttribute("message", message);
 
-        try {
-            List<Booking> bookingList = service.getAllBookings();
+            List<Booking> bookingList = bookingService.getAllBookings();
             session.setAttribute("bookingList", bookingList);
-        } catch (ClassNotFoundException | SQLException e) {
-            message = e.getMessage();
-        }
 
-        session.setAttribute("message", message);
-        response.sendRedirect("BookingDashboard.jsp");
+            response.sendRedirect("BookingDashboard.jsp");
+
+        } catch (Exception e) {
+            request.setAttribute("message", "Error deleting booking: " + e.getMessage());
+            response.sendRedirect("BookingDashboard.jsp");
+        }
     }
 }

@@ -3,42 +3,50 @@ package CruzeX.webapp.Model;
 public class Booking {
     private int bookingID;
     private int customerID;
+    private String vehicleID;  
+    private int driverID;
     private String bookingDate;
     private String bookingTime;
-    private String driverName;
-    private String address;
-    private String destination;
+    private String pickupLocation;
+    private String dropLocation;
+    private double distance;  // ✅ Distance (km)
+    private double fare;  // ✅ Total Fare
 
-    // Constructor with all fields
-    public Booking(int bookingID, int customerID, String bookingDate, String bookingTime, String driverName, String address, String destination) {
+    // Constructor with all fields (for retrieving existing bookings)
+    public Booking(int bookingID, int customerID, String vehicleID, int driverID, 
+                   String bookingDate, String bookingTime, String pickupLocation, 
+                   String dropLocation, double distance, double fare) {
         this.bookingID = bookingID;
         this.customerID = customerID;
+        this.vehicleID = vehicleID;
+        this.driverID = driverID;
         this.bookingDate = bookingDate;
         this.bookingTime = bookingTime;
-        this.driverName = driverName;
-        this.address = address;
-        this.destination = destination;
+        this.pickupLocation = pickupLocation;
+        this.dropLocation = dropLocation;
+        this.distance = distance;
+        this.fare = fare;
     }
-    
-    public Booking( int customerID, String bookingDate, String bookingTime, String driverName, String address, String destination) {
 
+    // Constructor for adding a new booking (without bookingID)
+    public Booking(int customerID, String vehicleID, int driverID, 
+                   String bookingDate, String bookingTime, String pickupLocation, 
+                   String dropLocation, double distance, double fare) {
         this.customerID = customerID;
+        this.vehicleID = vehicleID;
+        this.driverID = driverID;
         this.bookingDate = bookingDate;
         this.bookingTime = bookingTime;
-        this.driverName = driverName;
-        this.address = address;
-        this.destination = destination;
+        this.pickupLocation = pickupLocation;
+        this.dropLocation = dropLocation;
+        this.distance = distance;
+        this.fare = fare;
     }
 
-    public Booking() {
-        
-    }
+    // Default constructor
+    public Booking() { }
 
-//    public Booking(int customerID, String bookingDate, String bookingTime, String driverName, String address, String destination) {
-//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//    }
-
-    // Getters and setters for each field
+    // Getters and Setters
     public int getBookingID() {
         return bookingID;
     }
@@ -53,6 +61,22 @@ public class Booking {
 
     public void setCustomerID(int customerID) {
         this.customerID = customerID;
+    }
+
+    public String getVehicleID() {
+        return vehicleID;
+    }
+
+    public void setVehicleID(String vehicleID) {
+        this.vehicleID = vehicleID;
+    }
+
+    public int getDriverID() {
+        return driverID;
+    }
+
+    public void setDriverID(int driverID) {
+        this.driverID = driverID;
     }
 
     public String getBookingDate() {
@@ -71,27 +95,35 @@ public class Booking {
         this.bookingTime = bookingTime;
     }
 
-    public String getDriverName() {
-        return driverName;
+    public String getPickupLocation() {
+        return pickupLocation;
     }
 
-    public void setDriverName(String driverName) {
-        this.driverName = driverName;
+    public void setPickupLocation(String pickupLocation) {
+        this.pickupLocation = pickupLocation;
     }
 
-    public String getAddress() {
-        return address;
+    public String getDropLocation() {
+        return dropLocation;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setDropLocation(String dropLocation) {
+        this.dropLocation = dropLocation;
     }
 
-    public String getDestination() {
-        return destination;
+    public double getDistance() {
+        return distance;
     }
 
-    public void setDestination(String destination) {
-        this.destination = destination;
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
+
+    public double getFare() {
+        return fare;
+    }
+
+    public void setFare(double fare) {
+        this.fare = fare;
     }
 }

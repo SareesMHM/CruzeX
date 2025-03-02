@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -101,9 +102,28 @@
                             <input type="text" class="form-control" id="monthFee" name="monthFee"/>
                         </div>
                         <div class="mb-3">
-            <label for="driverID" class="form-label">Assign Driver:</label>
-            <input type="text" class="form-control" id="driverID" name="driverID" />
-        </div>
+                                    <label for="driverID">Assign Driver:</label>
+                                    <select class="form-control" id="driverID" name="driverID" required>
+                                        <option value="">-- Select Driver --</option>
+
+                                        <c:choose>
+                                            <c:when test="${not empty sessionScope.driverList}">
+                                                <c:forEach var="driver" items="${sessionScope.driverList}">
+                                                    <option value="${driver.driverID}">${driver.firstName} ${driver.lastName} (ID: ${driver.driverID})</option>
+
+                                                </c:forEach>
+                                            </c:when>
+                                        </c:choose>
+                                    </select>
+                                </div>
+
+                                <!-- Display driver details dynamically -->
+                                <div id="driverDetails" style="display:none; border:1px solid #ccc; padding:10px; margin-top:10px;">
+                                    <p><strong>Name:</strong> <span id="driverName"></span></p>
+                                    <p><strong>License Number:</strong> <span id="licenseNumber"></span></p>
+                                </div>
+
+
                         <input type="hidden" name="type" value="add"/>
                         <div class="mb-3">
                             <button type="submit" class="btn btn-primary btn-register">Register</button>
@@ -114,6 +134,37 @@
         </div>
     </div>
 </div>
+        <script>
+            $(document).ready(function() {
+                $("#driverID").change(function() {
+                    var driverID = $(this).val();
+                    if (driverID) {
+                        $.ajax({
+                            url: "DriverController",
+                            type: "GET",
+                            data: { type: "fetchDriver", driverId: driverID },
+                            success: function(response) {
+                                var driver = JSON.parse(response);
+                                if (driver) {
+                                    $("#driverName").text(driver.firstName + " " + driver.lastName);
+                                    $("#licenseNumber").text(driver.licenseNumber);
+                                    $("#driverDetails").show();
+                                } else {
+                                    $("#driverDetails").hide();
+                                }
+                            },
+                            error: function() {
+                                alert("Error fetching driver details.");
+                            }
+                        });
+                    } else {
+                        $("#driverDetails").hide();
+                    }
+                });
+            });
+        </script>
+
+
         <script>
             var message = "<%= request.getAttribute("message") %>";
             if (message) {

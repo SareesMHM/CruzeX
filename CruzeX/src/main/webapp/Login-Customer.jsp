@@ -96,7 +96,7 @@
       <div class="navbar-nav">
         <a class="nav-link mx-0 mx-md-3  fs-6" href="Dashboard.jsp">Home</a>
         <a class="nav-link active mx-0 mx-md-3 fs-6" aria-current="page" href="Register.jsp">Customer</a>
-        <a class="nav-link mx-0 mx-md-3 fs-6" href="AvailableTest.jsp">Available Car</a>
+        <a class="nav-link mx-0 mx-md-3 fs-6" href="CustomerViewVechile.jsp">Available Car</a>
       </div>
     </div>
   </div>

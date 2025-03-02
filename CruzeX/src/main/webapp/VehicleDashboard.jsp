@@ -39,7 +39,7 @@
             <a class="link-secondary nav-link" href="Search-Vehicle-Details.jsp">Search Vehicle & Update</a>
         </li>
         <li class="nav-item">
-            <a class="link-secondary nav-link" href="Add-Vehicle-Details.jsp">Add</a>
+            <a class="link-secondary nav-link" href="VehicleController?type=loadDrivers">Add</a>
         </li>
     </ul>
 
