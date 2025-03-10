@@ -1,16 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Payment Dashboard</title>
+    <title>Customer Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
             background-color: #f8f9fa;
-            padding-top: 20px;
+            font-family: Arial, sans-serif;
         }
         .nav-link {
             color: #ffffff;
@@ -19,72 +19,97 @@
             vertical-align: middle;
             text-align: center;
         }
-        .btn-remove {
+        .btn-action {
             padding: 0.375rem 0.75rem;
+        }
+        .container {
+            margin-top: 30px;
+        }
+        .table-responsive {
+            overflow-x: auto;
         }
     </style>
 </head>
 <body>
-<div class="container-fluid">
-    <ul class="nav justify-content-center bg-dark py-2">
-        <li class="nav-item">
-            <a class="link-warning nav-link px-5 mx-5" href="AdminHomePage.jsp"> << Go to Home</a>
-        </li>
-        <li class="nav-item">
-            <a class="text-white nav-link" href="CustomerController">Home</a>
-        </li>
-        <li class="nav-item">
-            <a class="link-secondary nav-link" href="Search-Payment.jsp">Search & Update</a>
-        </li>
-        <li class="nav-item">
-            <a class="link-secondary nav-link" href="Add-payment.jsp">Add Payment</a>
-        </li>
-    </ul>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="AdminHomePage.jsp">CruzeX</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="CustomerDashboard.jsp">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="SearchCustomer.jsp">Search & Update</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Register.jsp">Add Customer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-warning" href="AdminHomePage.jsp"><< Go Back</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-    <br/>
-
+    <!-- Message Alert -->
     <div class="container">
-        <h3 class="text-center">Payment Transactions</h3>
-        <table class="table table-striped">
-            <thead>
-                <tr class="table-dark">
-                    <th>Payment ID</th>
-                    <th>Cardholder Name</th>
-                    <th>Card Number</th>
-                    <th>Expiry Date</th>
-                    <th>CVC</th>
-                    <th>Payment Date</th>
-                    <th>Customer ID</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <c:forEach var="payment" items="${paymentList}">
-                    <tr>
-                        <td>${payment.paymentId}</td>
-                        <td>${payment.cardholderName}</td>
-                        <td>**** **** **** ${payment.cardNumber.substring(payment.cardNumber.length() - 4)}</td>
-                        <td>${payment.expiryDate}</td>
-                        <td>***</td>
-                        <td>${payment.paymentDate}</td>
-                        <td>${payment.customerId}</td>
-                        <td>
-                            <form method="post" action="payment">
-                                <input type="hidden" name="paymentId" value="${payment.paymentId}"/>
-                                <input type="hidden" name="type" value="delete"/>
-                                <button type="submit" class="btn btn-danger btn-sm">Remove</button>
-                            </form>
-                        </td>
-                    </tr>
-                </c:forEach>
-            </tbody>
-        </table>
-
-        <c:if test="${empty paymentList}">
-            <p class="text-center text-muted">No payments found.</p>
+        <c:if test="${not empty message}">
+            <div class="alert alert-info text-center">${message}</div>
         </c:if>
+
+        <!-- Customer List -->
+        <h3 class="text-center mt-4">Customer Management</h3>
+
+        <div class="table-responsive mt-3">
+            <table class="table table-striped table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Customer ID</th>
+                        <th>Full Name</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Username</th>
+                        <th>Address</th>
+                        <th>Gender</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="customer" items="${customerList}">
+                        <tr>
+                            <td>${customer.customerID}</td>
+                            <td>${customer.customerFullName}</td>
+                            <td>${customer.customerPhoneNumber}</td>
+                            <td>${customer.customerEmail}</td>
+                            <td>${customer.customerUsername}</td>
+                            <td>${customer.customerAddress}</td>
+                            <td>${customer.gender}</td>
+                            <td>
+                                <!-- Edit Button -->
+                                <a href="SearchCustomer.jsp?customerID=${customer.customerID}" class="btn btn-warning btn-sm">Edit</a>
+
+                                <!-- Delete Button -->
+                                <form action="CustomerController" method="post" style="display:inline;">
+                                    <input type="hidden" name="customerID" value="${customer.customerID}">
+                                    <input type="hidden" name="type" value="delete">
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+
+            <c:if test="${empty customerList}">
+                <p class="text-center text-muted">No customers found.</p>
+            </c:if>
+        </div>
     </div>
-</div>
-<br/>
 </body>
 </html>

@@ -39,11 +39,30 @@ class BookingTest {
 
         booking.setFare(1000.75);
         assertEquals(1000.75, booking.getFare(), 0.01);
+
+        // ✅ New: Test Tax and Discount (7% each)
+        double expectedTax = 1000.75 * 0.07;
+        double expectedDiscount = 1000.75 * 0.07;
+        double expectedTotalFare = 1000.75 + expectedTax - expectedDiscount;
+
+        booking.setTax(expectedTax);
+        assertEquals(expectedTax, booking.getTax(), 0.01);
+
+        booking.setDiscount(expectedDiscount);
+        assertEquals(expectedDiscount, booking.getDiscount(), 0.01);
+
+        booking.setTotalFare(expectedTotalFare);
+        assertEquals(expectedTotalFare, booking.getTotalFare(), 0.01);
     }
 
     @Test
     void testConstructors() {
-        Booking booking = new Booking(1, 123, "456", 789, "2024-03-25", "10:00 AM", "123 Main St", "456 Elm St", 10.5, 1000.75);
+        double fare = 1000.75;
+        double tax = fare * 0.07;
+        double discount = fare * 0.07;
+        double totalFare = fare + tax - discount;
+
+        Booking booking = new Booking(1, 123, "456", 789, "2024-03-25", "10:00 AM", "123 Main St", "456 Elm St", 10.5, fare, tax, discount, totalFare);
 
         assertEquals(1, booking.getBookingID());
         assertEquals(123, booking.getCustomerID());
@@ -54,8 +73,13 @@ class BookingTest {
         assertEquals("123 Main St", booking.getPickupLocation());
         assertEquals("456 Elm St", booking.getDropLocation());
 
-        // ✅ New: Check Distance and Fare
+        // ✅ Check Distance and Fare
         assertEquals(10.5, booking.getDistance(), 0.01);
-        assertEquals(1000.75, booking.getFare(), 0.01);
+        assertEquals(fare, booking.getFare(), 0.01);
+
+        // ✅ Check Tax, Discount, and Total Fare
+        assertEquals(tax, booking.getTax(), 0.01);
+        assertEquals(discount, booking.getDiscount(), 0.01);
+        assertEquals(totalFare, booking.getTotalFare(), 0.01);
     }
 }

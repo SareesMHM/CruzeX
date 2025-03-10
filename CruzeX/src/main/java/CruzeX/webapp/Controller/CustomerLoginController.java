@@ -1,19 +1,15 @@
 package CruzeX.webapp.Controller;
 
-
 import CruzeX.webapp.Model.Customer;
+import CruzeX.webapp.Service.CustomerService;
 import java.io.IOException;
 import java.sql.SQLException;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import CruzeX.webapp.Service.CustomerService;
-import java.util.List;
 import javax.servlet.http.HttpSession;
 
 @WebServlet("/CustomerLoginController")
@@ -24,35 +20,30 @@ public class CustomerLoginController extends HttpServlet {
         HttpSession session = request.getSession();
 
         try {
-            // You should implement your logic to validate the credentials here
-            // For simplicity, let's assume you have a method in your service to validate credentials
-           Customer customer = CustomerService.getCustomerServiceInstance().validateCustomerCredentials(username, password);
-           session.setAttribute("customerId", customer.getCustomerID());
+            // Validate customer credentials
+            Customer customer = CustomerService.getCustomerServiceInstance().validateCustomerCredentials(username, password);
 
-            if (customer!=null) {
-                // If credentials are valid, redirect the patient to Patient.jsp
+            if (customer != null && customer.getCustomerID() > 0) {
+                // ✅ Store customer info in session
+                session.setAttribute("customerId", customer.getCustomerID());
+                session.setAttribute("customerName", customer.getCustomerFullName());
+                session.setAttribute("customerEmail", customer.getCustomerEmail());
+                
+                // ✅ Redirect to the customer's homepage after login
                 response.sendRedirect("CustomerHomePage.jsp");
             } else {
-                // If credentials are not valid, show an error message on the login page
+                // ❌ Invalid credentials, redirect back with an error message
                 request.setAttribute("errorMessage", "Invalid username or password");
                 RequestDispatcher rd = request.getRequestDispatcher("Login-Customer.jsp");
                 rd.forward(request, response);
             }
-        } catch (ClassNotFoundException e) {
-            // Handle the ClassNotFoundException appropriately, such as logging or showing an error message
-            e.printStackTrace(); // This is a simple way to handle it, you should improve this handling
-            request.setAttribute("errorMessage", "An error occurred while processing your request");
-            RequestDispatcher rd = request.getRequestDispatcher("error.jsp"); // Create an error.jsp for showing error messages
-            rd.forward(request, response);
-        } catch (SQLException e) {
-            // Handle the SQLException appropriately, such as logging or showing an error message
-            e.printStackTrace(); // This is a simple way to handle it, you should improve this handling
-            request.setAttribute("errorMessage", "An error occurred while processing your request");
-            RequestDispatcher rd = request.getRequestDispatcher("error.jsp"); // Create an error.jsp for showing error messages
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace(); // Logging the exception (Consider logging it to a file in production)
+            
+            // ❌ Redirect to error page if something goes wrong
+            request.setAttribute("errorMessage", "An error occurred while processing your request. Please try again.");
+            RequestDispatcher rd = request.getRequestDispatcher("error.jsp"); 
             rd.forward(request, response);
         }
     }
 }
-
-
-

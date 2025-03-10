@@ -1,29 +1,22 @@
 package CruzeX.webapp.Dao;
 
+import CruzeX.webapp.Model.Booking;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import CruzeX.webapp.Model.Booking;
-
 public class BookingManager {
 
-    // Get a database connector instance
-    public DbConnector getDbConnector() {
-        DbConnectorFactory factory = new MySqlDbConnectorFactoryImpl();
-        return factory.getDbConnector();
-    }
-
-    // Establish a database connection
     private Connection getConnection() throws ClassNotFoundException, SQLException {
-        DbConnector connector = getDbConnector();
-        return connector.getDbConnection();
+        DbConnectorFactory factory = new MySqlDbConnectorFactoryImpl();
+        return factory.getDbConnector().getDbConnection();
     }
 
-    // Add a new booking and return the generated BookingID
+    // Add a new booking
     public int addBooking(Booking booking) throws ClassNotFoundException, SQLException {
-        String query = "INSERT INTO booking (CustomerID, VehicleID, DriverID, BookingDate, BookingTime, PickupLocation, DropLocation, Distance, Fare) " +
-                       "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO booking (CustomerID, VehicleID, DriverID, BookingDate, BookingTime, PickupLocation, DropLocation, Distance, Fare, Tax, Discount, TotalFare) " +
+                       "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
@@ -37,90 +30,24 @@ public class BookingManager {
             ps.setString(7, booking.getDropLocation());
             ps.setDouble(8, booking.getDistance());
             ps.setDouble(9, booking.getFare());
+            ps.setDouble(10, booking.getTax());
+            ps.setDouble(11, booking.getDiscount());
+            ps.setDouble(12, booking.getTotalFare());
 
             int result = ps.executeUpdate();
-            int bookingID = 0;
-
-            // Retrieve generated booking ID
             if (result > 0) {
                 ResultSet rs = ps.getGeneratedKeys();
                 if (rs.next()) {
-                    bookingID = rs.getInt(1);
+                    return rs.getInt(1);
                 }
             }
-            return bookingID;
-        } catch (SQLException e) {
-            System.err.println("Error adding booking: " + e.getMessage());
-            throw e;
+            return -1;
         }
     }
 
-    // Retrieve a specific booking by ID
-    public Booking getSpecificBooking(int bookingID) throws SQLException, ClassNotFoundException {
-        String query = "SELECT * FROM booking WHERE BookingID = ?";
-
-        try (Connection connection = getConnection();
-             PreparedStatement ps = connection.prepareStatement(query)) {
-
-            ps.setInt(1, bookingID);
-            ResultSet rs = ps.executeQuery();
-            Booking booking = null;
-
-            if (rs.next()) {
-                booking = new Booking(
-                    rs.getInt("BookingID"),
-                    rs.getInt("CustomerID"),
-                    rs.getString("VehicleID"),
-                    rs.getInt("DriverID"),
-                    rs.getString("BookingDate"),
-                    rs.getString("BookingTime"),
-                    rs.getString("PickupLocation"),
-                    rs.getString("DropLocation"),
-                    rs.getDouble("Distance"),
-                    rs.getDouble("Fare")
-                );
-            }
-            return booking;
-        } catch (SQLException e) {
-            System.err.println("Error fetching booking ID " + bookingID + ": " + e.getMessage());
-            throw e;
-        }
-    }
-
-    // Retrieve all bookings
-    public List<Booking> getAllBookings() throws SQLException, ClassNotFoundException {
-        String query = "SELECT * FROM booking";
-        List<Booking> bookingList = new ArrayList<>();
-
-        try (Connection connection = getConnection();
-             Statement st = connection.createStatement();
-             ResultSet rs = st.executeQuery(query)) {
-
-            while (rs.next()) {
-                Booking booking = new Booking(
-                    rs.getInt("BookingID"),
-                    rs.getInt("CustomerID"),
-                    rs.getString("VehicleID"),
-                    rs.getInt("DriverID"),
-                    rs.getString("BookingDate"),
-                    rs.getString("BookingTime"),
-                    rs.getString("PickupLocation"),
-                    rs.getString("DropLocation"),
-                    rs.getDouble("Distance"),
-                    rs.getDouble("Fare")
-                );
-                bookingList.add(booking);
-            }
-            return bookingList;
-        } catch (SQLException e) {
-            System.err.println("Error fetching all bookings: " + e.getMessage());
-            throw e;
-        }
-    }
-
-    // Update an existing booking
+    // Update a booking
     public boolean updateBooking(Booking booking) throws ClassNotFoundException, SQLException {
-        String query = "UPDATE booking SET CustomerID = ?, VehicleID = ?, DriverID = ?, BookingDate = ?, BookingTime = ?, PickupLocation = ?, DropLocation = ?, Distance = ?, Fare = ? WHERE BookingID = ?";
+        String query = "UPDATE booking SET CustomerID=?, VehicleID=?, DriverID=?, BookingDate=?, BookingTime=?, PickupLocation=?, DropLocation=?, Distance=?, Fare=?, Tax=?, Discount=?, TotalFare=? WHERE BookingID=?";
 
         try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(query)) {
@@ -134,17 +61,19 @@ public class BookingManager {
             ps.setString(7, booking.getDropLocation());
             ps.setDouble(8, booking.getDistance());
             ps.setDouble(9, booking.getFare());
-            ps.setInt(10, booking.getBookingID());
+            ps.setDouble(10, booking.getTax());
+            ps.setDouble(11, booking.getDiscount());
+            ps.setDouble(12, booking.getTotalFare());
+            ps.setInt(13, booking.getBookingID());
 
-            int result = ps.executeUpdate();
-            return result > 0;
-        } catch (SQLException e) {
-            System.err.println("Error updating booking ID " + booking.getBookingID() + ": " + e.getMessage());
-            throw e;
+             int result = ps.executeUpdate();
+        ps.close();
+        connection.close();
+            return ps.executeUpdate() > 0;
         }
     }
 
-    // Delete a booking by ID
+    // Delete booking by ID
     public boolean deleteBooking(int bookingID) throws ClassNotFoundException, SQLException {
         String query = "DELETE FROM booking WHERE BookingID = ?";
 
@@ -152,11 +81,76 @@ public class BookingManager {
              PreparedStatement ps = connection.prepareStatement(query)) {
 
             ps.setInt(1, bookingID);
-            int result = ps.executeUpdate();
-            return result > 0;
-        } catch (SQLException e) {
-            System.err.println("Error deleting booking ID " + bookingID + ": " + e.getMessage());
-            throw e;
+            connection.close();
+            return ps.executeUpdate() > 0;
         }
+    }
+
+    // Get specific booking by ID
+    public Booking getSpecificBookingById(int bookingID) throws ClassNotFoundException, SQLException {
+        String query = "SELECT * FROM booking WHERE BookingID = ?";
+
+        try (Connection connection = getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setInt(1, bookingID);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return new Booking(
+                        rs.getInt("BookingID"),
+                        rs.getInt("CustomerID"),
+                        rs.getString("VehicleID"),
+                        rs.getInt("DriverID"),
+                        rs.getString("BookingDate"),
+                        rs.getString("BookingTime"),
+                        rs.getString("PickupLocation"),
+                        rs.getString("DropLocation"),
+                        rs.getDouble("Distance"),
+                        rs.getDouble("Fare"),
+                        rs.getDouble("Tax"),
+                        rs.getDouble("Discount"),
+                        rs.getDouble("TotalFare")
+                );
+            }
+        }
+
+        
+        return null;
+    }
+
+    // Get all bookings
+    public List<Booking> getAllBookings() throws ClassNotFoundException, SQLException {
+        List<Booking> bookingList = new ArrayList<>();
+        String query = "SELECT * FROM booking";
+
+        try (Connection connection = getConnection();
+             PreparedStatement ps = connection.prepareStatement(query);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Booking booking = new Booking(
+                        rs.getInt("BookingID"),
+                        rs.getInt("CustomerID"),
+                        rs.getString("VehicleID"),
+                        rs.getInt("DriverID"),
+                        rs.getString("BookingDate"),
+                        rs.getString("BookingTime"),
+                        rs.getString("PickupLocation"),
+                        rs.getString("DropLocation"),
+                        rs.getDouble("Distance"),
+                        rs.getDouble("Fare"),
+                        rs.getDouble("Tax"),
+                        rs.getDouble("Discount"),
+                        rs.getDouble("TotalFare")
+                );
+                bookingList.add(booking);
+            }
+        }catch (SQLException e) {
+        e.printStackTrace(); // Replace with logging in production
+        throw e;
+        }
+
+        return bookingList;
     }
 }

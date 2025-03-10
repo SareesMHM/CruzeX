@@ -7,8 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login</title>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
     function displayErrorMessage(message) {
         var errorMessageDiv = document.getElementById("errorMessage");
@@ -16,14 +18,14 @@
         errorMessageDiv.style.display = "block";
     }
 </script>
+
 <style>
     body {
-    background-image: url('img/ima 1.jpg'); 
-      background-size: cover;
-      background-position: center; 
-      background-repeat: no-repeat; 
-      height: 100vh; 
-      
+        background-image: url('img/ima 1.jpg'); 
+        background-size: cover;
+        background-position: center; 
+        background-repeat: no-repeat; 
+        height: 100vh;
         background-color: #f8f9fa;
         min-height: 100vh;
         display: flex;
@@ -46,12 +48,12 @@
     }
     .form-container h2 {
         font-weight: bold;
-        color: #333333;
+        color: #333;
         margin-bottom: 30px;
     }
     .form-group label {
         font-weight: bold;
-        color: #333333;
+        color: #333;
     }
     .form-control {
         border-radius: 10px;
@@ -67,7 +69,11 @@
         background-color: #ff4d4d;
     }
     .checkbox a {
-        color: #333333;
+        color: #007bff;
+        text-decoration: none;
+    }
+    .checkbox a:hover {
+        text-decoration: underline;
     }
     #errorMessage {
         display: none;
@@ -85,28 +91,30 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light" >
-  <div class="container-fluid" >
-      <img class="logo" alt="Logo" src="img/ima (1).webp">
-    <p class="fw-bold fs-4 mt-3"> CruzeX</p>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-link mx-0 mx-md-3  fs-6" href="Dashboard.jsp">Home</a>
-        <a class="nav-link active mx-0 mx-md-3 fs-6" aria-current="page" href="Register.jsp">Customer</a>
-        <a class="nav-link mx-0 mx-md-3 fs-6" href="CustomerViewVechile.jsp">Available Car</a>
-      </div>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container-fluid">
+        <img class="logo" alt="Logo" src="img/ima (1).webp">
+        <p class="fw-bold fs-4 mt-3"> CruzeX</p>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end">
+            <div class="navbar-nav">
+                <a class="nav-link mx-md-3 fs-6" href="Dashboard.jsp">Home</a>
+                <a class="nav-link active mx-md-3 fs-6" href="Register.jsp">Register</a>
+                <a class="nav-link mx-md-3 fs-6" href="CustomerViewVehicle.jsp">Available Cars</a>
+            </div>
+        </div>
     </div>
-  </div>
 </nav>
 
+<!-- Login Form -->
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6 form-container">
             <h2>Login</h2>
-            <form action="CustomerLoginController" method="post">
+            <form action="CustomerLoginController" method="post" onsubmit="return validateForm()">
                 <div class="form-group mt-4">
                     <label for="username">Username:</label>
                     <input type="text" id="username" class="form-control" name="username" required>
@@ -116,27 +124,38 @@
                     <input type="password" id="password" class="form-control" name="password" required>
                 </div>
                 <div class="checkbox mt-4">
-                    <a class="nav-link active  fs-6" aria-current="page" href="Register.jsp">Register</a>
+                    <a href="ForgotPassword.jsp">Forgot Password?</a>
                 </div>
-                <button type="submit" class="btn btn-secondary mb-5 mt-4" onclick="return validateForm()">Login</button>
+                <div class="checkbox mt-2">
+                    <a href="Register.jsp">Don't have an account? Register here</a>
+                </div>
+                <button type="submit" class="btn btn-secondary mt-4">Login</button>
             </form>
             <div id="errorMessage"></div>
         </div>
     </div>
 </div>
 
+<!-- Footer -->
 <footer class="footer">
     <div class="container">
-        <p>Copyright &copy; 2025</p>
+        <p>Copyright &copy; 2025 CruzeX</p>
     </div>
 </footer>
 
 <script>
+            var message = "<%= request.getAttribute("errorMessage") %>";
+            if (message) {
+                alert(message)
+            }
+        </script>
+
+<script>
     function validateForm() {
-        var username = document.getElementById("username").value;
-        var password = document.getElementById("password").value;
-        
-        if (username.trim() === "" || password.trim() === "") {
+        var username = document.getElementById("username").value.trim();
+        var password = document.getElementById("password").value.trim();
+
+        if (username === "" || password === "") {
             displayErrorMessage("Username and password are required.");
             return false;
         }

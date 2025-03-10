@@ -25,16 +25,24 @@ public class RegisterCustomerController extends HttpServlet {
         }
     }
 
-    private void addCustomer(HttpServletRequest request, HttpServletResponse response,
-                             CustomerService service) throws ServletException, IOException {
+    private void addCustomer(HttpServletRequest request, HttpServletResponse response,CustomerService service) throws ServletException, IOException {
         String customerFullName = request.getParameter("customerFullName");
-        String customerPhoneNumber = request.getParameter("customerPhoneNumber"); // Changed to String
+        String customerPhoneNumber = request.getParameter("customerPhoneNumber");
         String dateOfBirth = request.getParameter("dateOfBirth");
         String customerAddress = request.getParameter("customerAddress");
         String gender = request.getParameter("gender");
         String customerEmail = request.getParameter("customerEmail");
         String customerUsername = request.getParameter("customerUsername");
         String customerPassword = request.getParameter("customerPassword");
+        String confirmPassword = request.getParameter("confirmPassword");
+
+        //  Validate Password Match
+//        if (!customerPassword.equals(confirmPassword)) {
+//            request.setAttribute("message", "Passwords do not match!");
+//            RequestDispatcher rd = request.getRequestDispatcher("Register.jsp");
+//            rd.forward(request, response);
+//            return;
+//        }
 
         Customer customer = new Customer(customerFullName, Integer.parseInt(customerPhoneNumber), dateOfBirth, 
                                          customerAddress, gender, customerEmail, 
@@ -55,7 +63,7 @@ public class RegisterCustomerController extends HttpServlet {
         }
 
         request.setAttribute("message", message);
-        RequestDispatcher rd = request.getRequestDispatcher("Register.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("Login-Customer.jsp");
         rd.forward(request, response);
     }
 }

@@ -11,10 +11,10 @@ public class Customer {
     private String customerUsername;
     private String customerPassword;
 
-    public Customer() {
-        // Default constructor
-    }
+    //  Default Constructor
+    public Customer() {}
 
+    //  Constructor with all details (excluding confirmPassword)
     public Customer(String customerFullName, int customerPhoneNumber, String dateOfBirth,
                     String customerAddress, String gender, String customerEmail,
                     String customerUsername, String customerPassword) {
@@ -27,76 +27,40 @@ public class Customer {
         this.customerUsername = customerUsername;
         this.customerPassword = customerPassword;
     }
-
-    public int getCustomerID() {
-        return customerID;
-    }
-
-    public void setCustomerID(int customerID) {
-        this.customerID = customerID;
-    }
-
-    public String getCustomerFullName() {
-        return customerFullName;
-    }
-
-    public void setCustomerFullName(String customerFullName) {
+    
+    public Customer(int customerID,String customerFullName, int customerPhoneNumber, String dateOfBirth,
+                    String customerAddress, String gender, String customerEmail,
+                    String customerUsername, String customerPassword) {
+        this.customerID=customerID;
         this.customerFullName = customerFullName;
-    }
-
-    public int getCustomerPhoneNumber() {
-        return customerPhoneNumber;
-    }
-
-    public void setCustomerPhoneNumber(int customerPhoneNumber) {
         this.customerPhoneNumber = customerPhoneNumber;
-    }
-
-    public String getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
-    }
-
-    public String getCustomerAddress() {
-        return customerAddress;
-    }
-
-    public void setCustomerAddress(String customerAddress) {
         this.customerAddress = customerAddress;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
         this.gender = gender;
-    }
-
-    public String getCustomerEmail() {
-        return customerEmail;
-    }
-
-    public void setCustomerEmail(String customerEmail) {
         this.customerEmail = customerEmail;
-    }
-
-    public String getCustomerUsername() {
-        return customerUsername;
-    }
-
-    public void setCustomerUsername(String customerUsername) {
         this.customerUsername = customerUsername;
-    }
-
-    public String getCustomerPassword() {
-        return customerPassword;
-    }
-
-    public void setCustomerPassword(String customerPassword) {
         this.customerPassword = customerPassword;
     }
+
+   
+
+    //  Getters & Setters
+    public int getCustomerID() { return customerID; }
+    public void setCustomerID(int customerID) { this.customerID = customerID; }
+    public String getCustomerFullName() { return customerFullName; }
+    public void setCustomerFullName(String customerFullName) { this.customerFullName = customerFullName; }
+    public int getCustomerPhoneNumber() { return customerPhoneNumber; }
+    public void setCustomerPhoneNumber(int customerPhoneNumber) { this.customerPhoneNumber = customerPhoneNumber; }
+    public String getDateOfBirth() { return dateOfBirth; }
+    public void setDateOfBirth(String dateOfBirth) { this.dateOfBirth = dateOfBirth; }
+    public String getCustomerAddress() { return customerAddress; }
+    public void setCustomerAddress(String customerAddress) { this.customerAddress = customerAddress; }
+    public String getGender() { return gender; }
+    public void setGender(String gender) { this.gender = gender; }
+    public String getCustomerEmail() { return customerEmail; }
+    public void setCustomerEmail(String customerEmail) { this.customerEmail = customerEmail; }
+    public String getCustomerUsername() { return customerUsername; }
+    public void setCustomerUsername(String customerUsername) { this.customerUsername = customerUsername; }
+    public String getCustomerPassword() { return customerPassword; }
+    public void setCustomerPassword(String customerPassword) { this.customerPassword = customerPassword; }
 }

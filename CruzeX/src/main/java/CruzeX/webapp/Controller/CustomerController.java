@@ -35,12 +35,24 @@ public class CustomerController extends HttpServlet {
         String type = request.getParameter("type");
         CustomerService customerService = CustomerService.getCustomerServiceInstance();
 
-        if (type != null && type.equals("update")) {
-            updateCustomer(request, response, customerService);
-        } else if (type != null && type.equals("add")) {
-            addCustomer(request, response, customerService);
-        } else if (type != null && type.equals("delete")) {
-            deleteCustomer(request, response, customerService);
+        if (type != null) {
+            switch (type) {
+                case "update":
+                    updateCustomer(request, response, customerService);
+                    break;
+                case "add":
+                    addCustomer(request, response, customerService);
+                    break;
+                case "delete":
+                    deleteCustomer(request, response, customerService);
+                    break;
+                case "login":
+                    loginCustomer(request, response, customerService);
+                    break;
+                case "logout":
+                    logoutCustomer(request, response);
+                    break;
+            }
         }
     }
 
@@ -54,15 +66,10 @@ public class CustomerController extends HttpServlet {
         } catch (ClassNotFoundException | SQLException e) {
             message = e.getMessage();
             customerList = new ArrayList<>();
-        //}
-
-//        request.setAttribute("message", message);
-//        request.setAttribute("customerList", customerList);
-//
-//        RequestDispatcher rd = request.getRequestDispatcher("CustomerDashboard.jsp");
-//        rd.forward(request, response);
-session.setAttribute("message", message);
         }
+
+        session.setAttribute("customerList", customerList);
+        session.setAttribute("message", message);
         response.sendRedirect("CustomerDashboard.jsp");
     }
 
@@ -108,15 +115,18 @@ session.setAttribute("message", message);
 
         boolean result;
         String message = "";
-        result = service.editTheCustomer(customer);
-        if (result) {
-            message = "Customer " + customerID + " has been successfully updated!";
-        } else {
-            message = "Failed to update the customer! Customer ID: " + customerID;
+        try {
+            result = service.editCustomer(customer);
+            if (result) {
+                message = "Customer " + customerID + " has been successfully updated!";
+            } else {
+                message = "Failed to update customer! Customer ID: " + customerID;
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            message = e.getMessage();
         }
 
         request.setAttribute("message", message);
-
         RequestDispatcher rd = request.getRequestDispatcher("Search-Customer-Details.jsp");
         rd.forward(request, response);
     }
@@ -138,42 +148,65 @@ session.setAttribute("message", message);
         try {
             result = service.registerCustomer(customer);
             if (result) {
-                message = "Customer " + customerFullName + " has been successfully added!";
+                message = "Customer " + customerFullName + " has been successfully registered!";
             } else {
-                message = "Failed to add the customer!";
+                message = "Failed to register customer!";
             }
         } catch (ClassNotFoundException | SQLException e) {
             message = e.getMessage();
         }
 
         request.setAttribute("message", message);
-
         RequestDispatcher rd = request.getRequestDispatcher("Add-Customer-Details.jsp");
         rd.forward(request, response);
     }
 
     private void deleteCustomer(HttpServletRequest request, HttpServletResponse response, CustomerService service) throws ServletException, IOException {
         int customerID = Integer.parseInt(request.getParameter("customerID"));
-
         boolean result;
         String message = "";
-        result = service.deleteTheCustomer(customerID);
-        if (result) {
-            message = "Customer with ID " + customerID + " has been successfully deleted!";
-        } else {
-            message = "Failed to delete the customer with ID: " + customerID;
-        }
-
-        HttpSession session = request.getSession();
 
         try {
-            List<Customer> customerList = service.getAllCustomers();
-            session.setAttribute("customerList", customerList);
+            result = service.deleteCustomer(customerID);
+            if (result) {
+                message = "Customer with ID " + customerID + " has been successfully deleted!";
+            } else {
+                message = "Failed to delete customer with ID: " + customerID;
+            }
         } catch (ClassNotFoundException | SQLException e) {
             message = e.getMessage();
         }
 
+        HttpSession session = request.getSession();
         session.setAttribute("message", message);
         response.sendRedirect("CustomerDashboard.jsp");
+    }
+
+    private void loginCustomer(HttpServletRequest request, HttpServletResponse response, CustomerService service) throws ServletException, IOException {
+        String username = request.getParameter("customerUsername");
+        String password = request.getParameter("customerPassword");
+
+        try {
+            Customer customer = service.validateCustomerCredentials(username, password);
+            if (customer.getCustomerID() > 0) {
+                HttpSession session = request.getSession();
+                session.setAttribute("loggedInCustomer", customer);
+                response.sendRedirect("CustomerDashboard.jsp");
+            } else {
+                request.setAttribute("message", "Invalid Username or Password");
+                RequestDispatcher rd = request.getRequestDispatcher("CustomerLogReg.jsp");
+                rd.forward(request, response);
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            request.setAttribute("message", e.getMessage());
+            RequestDispatcher rd = request.getRequestDispatcher("CustomerLogReg.jsp");
+            rd.forward(request, response);
+        }
+    }
+
+    private void logoutCustomer(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession();
+        session.invalidate();
+        response.sendRedirect("CustomerLogReg.jsp");
     }
 }

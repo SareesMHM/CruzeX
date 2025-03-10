@@ -29,17 +29,15 @@
     <!-- Navigation Bar -->
     <ul class="nav justify-content-center bg-dark py-2">
         <li class="nav-item">
-            <a class="link-warning nav-link px-5 mx-5" href="CustomerHomePage.jsp"> << Go to Home</a>
+            <a class="link-warning nav-link px-5 mx-5" href="AdminHomePage.jsp"> << Go to Home</a>
         </li>
         <li class="nav-item">
-            <a class="link-secondary nav-link" href="BookingController">All Bookings</a>
+            <a class="link-secondary nav-link" href="BookingDashboard.jsp">All Bookings</a>
         </li>
         <li class="nav-item">
             <a class="text-white nav-link" href="Search-Booking.jsp">Search & Update</a>
         </li>
-        <li class="nav-item">
-            <a class="link-secondary nav-link" href="Add-Booking.jsp">New Booking</a>
-        </li>
+        
     </ul>
     <br/>
 
@@ -119,7 +117,7 @@
 </div>
 
 <!-- Google Maps Distance Calculation -->
-<script>
+<!--<script>
     function initAutocomplete() {
         var pickup = new google.maps.places.Autocomplete(document.getElementById("pickupLocation"));
         var drop = new google.maps.places.Autocomplete(document.getElementById("dropLocation"));
@@ -156,7 +154,13 @@
     document.getElementById("pickupLocation").addEventListener("change", calculateDistance);
 
     google.maps.event.addDomListener(window, 'load', initAutocomplete);
-</script>
+</script>-->
+ <script>
+                    var message = "<%= request.getAttribute("message") %>";
+                    if (message) {
+                        alert(message);
+                    }
+                </script>
 
 </body>
 </html>

@@ -1,87 +1,79 @@
 package CruzeX.webapp.Controller;
 
-import java.io.IOException;
-import java.sql.SQLException;
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.Charge;
+import CruzeX.webapp.Model.Payment;
+import CruzeX.webapp.Service.PaymentService;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import CruzeX.webapp.Model.Payment;
-import CruzeX.webapp.Service.PaymentService;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @WebServlet("/PaymentController")
 public class PaymentController extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-    private PaymentService paymentService = PaymentService.getPaymentServiceInstance();
-
+    
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String type = request.getParameter("type");
+        Stripe.apiKey = System.getenv("STRIPE_SECRET_KEY"); // Securely store API key in environment variable
 
-        if ("add".equals(type)) {
-            addPayment(request, response);
-        } else if ("delete".equals(type)) {
-            deletePayment(request, response);
+        String token = request.getParameter("stripeToken");
+        String bookingID = request.getParameter("bookingID");
+        String customerID = request.getParameter("customerID");
+        String amountStr = request.getParameter("amount");
+        String cardholderName = request.getParameter("cardholderName");
+        double tax = Double.parseDouble(request.getParameter("tax"));
+            double discount = Double.parseDouble(request.getParameter("discount"));
+            double totalFare = Double.parseDouble(request.getParameter("totalFare"));
+
+        response.setContentType("application/json");
+
+        if (token == null || bookingID == null || amountStr == null || customerID == null || cardholderName == null) {
+            response.getWriter().write("{\"success\": false, \"message\": \"Invalid request parameters.\"}");
+            return;
         }
-    }
 
-    private void addPayment(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            // ✅ Parse and validate required parameters
-            int bookingID = Integer.parseInt(request.getParameter("bookingID"));
-            int customerID = Integer.parseInt(request.getParameter("customerID"));
+            double amount = Double.parseDouble(amountStr) * 100; // Convert amount to cents
+            
+            // Create charge parameters
+            Map<String, Object> params = new HashMap<>();
+            params.put("amount", (int) amount);
+            params.put("currency", "LKR");
+            params.put("description", "Payment for Booking ID: " + bookingID);
+            params.put("source", token);
 
-            String amountStr = request.getParameter("amount");
-            double amount = (amountStr != null && !amountStr.trim().isEmpty()) ? Double.parseDouble(amountStr) : 0.0;
+            Charge charge = Charge.create(params); // Process payment via Stripe
 
-            String cardNumber = request.getParameter("cardNumber");
-            String expiryDate = request.getParameter("expiryDate");
-            String cvcNumber = request.getParameter("cvcNumber");
-            String paymentDate =request.getParameter("paymentDate");
+            // Store payment details in the database
+            Payment payment = new Payment(
+                    Integer.parseInt(bookingID),
+                    Integer.parseInt(customerID),
+                    Double.parseDouble(amountStr),
+                    tax,
+                    discount,
+                    totalFare,
+                    cardholderName,
+                    token.substring(token.length() - 4) // Store only last 4 digits of the token
+            );
 
-            // ✅ Check for missing payment details
-            if (cardNumber == null || expiryDate == null || cvcNumber == null || amount <= 0) {
-                request.setAttribute("message", "Error: Please fill all payment details correctly.");
-                request.getRequestDispatcher("Add-Payment.jsp").forward(request, response);
-                return;
+            boolean paymentSuccess = PaymentService.getInstance().processPayment(payment);
+
+            if (paymentSuccess) {
+                response.sendRedirect("Billing.jsp?bookingID=" + bookingID + "&amount=" + amountStr + "&paymentStatus=Successful");
+            } else {
+                response.getWriter().write("{\"success\": false, \"message\": \"Failed to store payment in database.\"}");
             }
 
-            // ✅ Create a new Payment object
-            Payment payment = new Payment(bookingID, amount, cardNumber, expiryDate, cvcNumber,paymentDate, customerID);
-
-            // ✅ Process the payment
-            boolean result = paymentService.processPayment(payment);
-            String message = result ? "Payment successful!" : "Payment failed! Please try again.";
-
-            // ✅ Redirect to PaymentConfirmation.jsp
-            request.setAttribute("message", message);
-            request.getRequestDispatcher("PaymentConfirmation.jsp").forward(request, response);
-
+        } catch (StripeException e) {
+            response.getWriter().write("{\"success\": false, \"message\": \"" + e.getMessage() + "\"}");
         } catch (NumberFormatException e) {
-            request.setAttribute("message", "Error: Invalid input. Please enter a valid number.");
-            request.getRequestDispatcher("Add-Payment.jsp").forward(request, response);
-        } catch (Exception e) {
-            request.setAttribute("message", "Error processing payment: " + e.getMessage());
-            request.getRequestDispatcher("Add-Payment.jsp").forward(request, response);
-        }
-    }
-
-    private void deletePayment(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            int paymentId = Integer.parseInt(request.getParameter("paymentId"));
-            boolean result = paymentService.deletePayment(paymentId);
-            String message = result ? "Payment deleted successfully!" : "Failed to delete payment.";
-
-            request.setAttribute("message", message);
-            response.sendRedirect("PaymentDashboard.jsp");
-
-        } catch (NumberFormatException e) {
-            request.setAttribute("message", "Error: Invalid Payment ID.");
-            request.getRequestDispatcher("PaymentDashboard.jsp").forward(request, response);
-        } catch (Exception e) {
-            request.setAttribute("message", "Error deleting payment: " + e.getMessage());
-            request.getRequestDispatcher("PaymentDashboard.jsp").forward(request, response);
+            response.getWriter().write("{\"success\": false, \"message\": \"Invalid amount format.\"}");
         }
     }
 }

@@ -1,111 +1,64 @@
 package CruzeX.webapp.Dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import CruzeX.webapp.Model.Payment;
+import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import CruzeX.webapp.Model.Payment;
-
 public class PaymentManager {
+
     public DbConnector getDbConnector() {
         DbConnectorFactory factory = new MySqlDbConnectorFactoryImpl();
         return factory.getDbConnector();
     }
 
     private Connection getConnection() throws ClassNotFoundException, SQLException {
-        DbConnector connector = getDbConnector();
-        return connector.getDbConnection();
+        return getDbConnector().getDbConnection();
     }
 
-    // ✅ Add a new payment
-    public boolean addPayment(Payment payment) throws ClassNotFoundException, SQLException {
-        String query = "INSERT INTO payment (BookingID, CustomerID, Amount, CardNumber, ExpiryDate, CVCNumber) VALUES (?, ?, ?, ?, ?, ?)";
-
+    public boolean addPayment(Payment payment) throws SQLException, ClassNotFoundException {
+        String query = "INSERT INTO payment (bookingId, customerId,  distance, fare, tax, discount, totalFare, cardholderName, last4Digits, paymentDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)";
         try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(query)) {
 
-            ps.setInt(1, payment.getBookingId());
+           ps.setInt(1, payment.getBookingId());
             ps.setInt(2, payment.getCustomerId());
-            ps.setDouble(3, payment.getPrice());
-            ps.setString(4, payment.getCardNumber());
-            ps.setString(5, payment.getExpiryDate());
-            ps.setString(6, payment.getCvcNumber());
+            ps.setDouble(3, payment.getDistance());
+            ps.setDouble(4, payment.getFare());
+            ps.setDouble(5, payment.getTax());
+            ps.setDouble(6, payment.getDiscount());
+            ps.setDouble(7, payment.getTotalFare());
+            ps.setString(8, payment.getCardholderName());
+            ps.setString(9, payment.getLast4Digits());
 
             return ps.executeUpdate() > 0;
         }
     }
 
-    // ✅ Retrieve a specific payment by ID
-    public Payment getPaymentById(int paymentId) throws SQLException, ClassNotFoundException {
-        String query = "SELECT * FROM payment WHERE PaymentID = ?";
-        Payment payment = null;
-
+    public Payment getPaymentByBookingId(int bookingId) throws SQLException, ClassNotFoundException {
+        String query = "SELECT * FROM payment WHERE bookingId = ?";
         try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(query)) {
 
-            ps.setInt(1, paymentId);
+            ps.setInt(1, bookingId);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                payment = new Payment(
-                    rs.getInt("PaymentID"),
-                         rs.getInt("CustomerId"),
-                    rs.getDouble("Amount"),
-                    rs.getString("CardholderName"),
-                    rs.getString("CardNumber"),
-                    rs.getString("ExpiryDate"),
-                    rs.getString("CVCNumber"),
-                    rs.getString("PaymentDate"),
-                    rs.getInt("BookingID")
-                       
+                return new Payment(
+                        rs.getInt("paymentId"),
+                        rs.getInt("bookingId"),
+                        rs.getInt("customerId"),
+                        rs.getDouble("fare"),
+                        rs.getDouble("tax"),
+                        rs.getDouble("discount"),
+                        rs.getDouble("totalFare"),
+                        rs.getString("cardholderName"),
+                        rs.getString("last4Digits"),
+                        rs.getTimestamp("paymentDate").toLocalDateTime()
                 );
             }
         }
-        return payment;
-    }
-
-    // ✅ Retrieve all payments
-    public List<Payment> getAllPayments() throws SQLException, ClassNotFoundException {
-        List<Payment> paymentList = new ArrayList<>();
-        String query = "SELECT * FROM payment";
-
-        try (Connection connection = getConnection();
-             PreparedStatement ps = connection.prepareStatement(query);
-             ResultSet rs = ps.executeQuery()) {
-
-            while (rs.next()) {
-                Payment payment = new Payment(
-                    rs.getInt("PaymentID"),
-                        rs.getInt("CustomerId"),
-                    rs.getDouble("Amount"),
-                    rs.getString("CardholderName"),
-                    rs.getString("CardNumber"),
-                    rs.getString("ExpiryDate"),
-                    rs.getString("CVCNumber"),
-                    rs.getString("PaymentDate"),
-                    rs.getInt("BookingID")
-                        
-                        
-                        
-                );
-                paymentList.add(payment);
-            }
-        }
-        return paymentList;
-    }
-
-    // ✅ Delete a payment by ID
-    public boolean deletePayment(int paymentId) throws ClassNotFoundException, SQLException {
-        String query = "DELETE FROM payment WHERE PaymentID = ?";
-
-        try (Connection connection = getConnection();
-             PreparedStatement ps = connection.prepareStatement(query)) {
-
-            ps.setInt(1, paymentId);
-            return ps.executeUpdate() > 0;
-        }
+        return null;
     }
 }

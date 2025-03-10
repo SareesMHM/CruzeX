@@ -37,7 +37,7 @@
                                 <p class="card-text"><strong>Assigned Driver ID:</strong> ${vehicle.driverID}</p>
 
                                 <!-- Booking button redirects to Add-Booking.jsp with pre-filled values -->
-                                <a href="Add-Booking.jsp?vehicleID=${vehicle.vehicleID}&driverID=${vehicle.driverID}&customerID=<%= customerID %>" 
+                                <a href="Add-Booking.jsp?vehicleID=${vehicle.vehicleID}&driverID=${vehicle.driverID}&customerID=<%= customerID %>&monthFee=${vehicle.monthFee}" 
                                    class="btn btn-success w-100">Book Now</a>
                             </div>
                         </div>
