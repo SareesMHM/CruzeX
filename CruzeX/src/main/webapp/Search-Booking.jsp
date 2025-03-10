@@ -47,7 +47,7 @@
             <!-- Search Booking -->
             <div class="col-md-6">
                 <h3>Search Booking</h3>
-                <form method="get" action="BookingController">
+                <form method="get" action="BookingController?type=getSpecificBooking">
                     <div class="form-group">
                         <label>Enter Booking ID:</label>
                         <input type="text" class="form-control" name="bookingID" required>
@@ -97,18 +97,25 @@
                     <br/>
 
                     <label for="distance">Distance (KM):</label>
-                    <input type="text" class="form-control" id="distance" name="distance" readonly/>
+                    <input type="text" class="form-control" id="distance" name="distance" value="${not empty booking ? booking.distance : ''}"  readonly/>
                     <br/>
 
-                    <label for="monthFee">Vehicle Monthly Fee (LKR):</label>
-                    <input type="text" class="form-control" id="monthFee" name="monthFee" value="${not empty booking ? booking.vehicle.monthFee : ''}" readonly/>
+                    <label for="fare">fare):</label>
+                    <input type="text" class="form-control" id="fare" name="fare" value="${not empty booking ? booking.fare : ''}" readonly/>
+                    <br/>
+                    <label for="tax">tax):</label>
+                    <input type="text" class="form-control" id="tax" name="tax" value="${not empty booking ? booking.tax : ''}" readonly/>
+                    <br/>
+                    <label for="discount">discount):</label>
+                    <input type="text" class="form-control" id="discount" name="discount" value="${not empty booking ? booking.discount : ''}" readonly/>
+                    <br/>
+                    <label for="totalFare">Total Fare):</label>
+                    <input type="text" class="form-control" id="totalFare" name="totalFare" value="${not empty booking ? booking.totalFare : ''}" readonly/>
                     <br/>
 
-                    <label for="fare">Total Fare (LKR):</label>
-                    <input type="text" class="form-control" id="fare" name="fare" readonly/>
-                    <br/>
+                    
 
-                    <input type="hidden" name="type" value="update"/>
+                    <input type="hidden" name="type" value="updateBooking"/>
                     <button type="submit" class="btn btn-warning">Update</button>
                 </form>
             </div>

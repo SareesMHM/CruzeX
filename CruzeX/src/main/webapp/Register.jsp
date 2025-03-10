@@ -74,7 +74,7 @@
 <div class="container">
     <h2 class="text-center mb-4">Register</h2>
 
-    <form method="post" action="registerCustomerController" onsubmit="return validatePasswords();">
+    <form method="post" action="CustomerController" onsubmit="return validatePasswords();">
         <div class="mb-3">
             <label for="customerFullName" class="form-label">Full Name:</label>
             <input type="text" class="form-control" id="customerFullName" name="customerFullName" required>

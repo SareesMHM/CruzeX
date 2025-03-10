@@ -61,10 +61,10 @@
             <a class="link-secondary nav-link" href="BookingDashboard.jsp">Store</a>
         </li>
         <li class="nav-item">
-            <a class="link-secondary nav-link" href="Search-Booking.jsp">Search & Update</a>
+            <a class="link-secondary nav-link" href="VehicleController">Search & Update</a>
         </li>
         <li class="nav-item">
-            <a class="text-white nav-link" href="Booking.jsp">Book</a>
+            <a class="text-white nav-link" href="Add-Booking.jsp">Book</a>
         </li>
     </ul>
     <br/>

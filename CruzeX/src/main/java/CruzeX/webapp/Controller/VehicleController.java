@@ -29,7 +29,17 @@ public class VehicleController extends HttpServlet {
             getAllVehicles(request, response, "CustomerViewVehicle.jsp");
         } else if ("loadDrivers".equals(type)) {
             loadDrivers(request, response);
-        } else {
+        } 
+        else if ("getSpecificVehicle".equals(type)) {
+            getSpecificVehicle(request, response);
+        }
+         else if ("updateVehicle".equals(type)) {
+            updateVehicle(request, response);
+        }
+         
+          else if ("deleteVehicle".equals(type)) {
+            deleteVehicle(request, response);
+        }else {
             getAllVehicles(request, response, "VehicleDashboard.jsp");
         }
     }

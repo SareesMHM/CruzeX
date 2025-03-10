@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import CruzeX.webapp.Model.Customer;
 import CruzeX.webapp.Service.CustomerService;
 
-@WebServlet("/registerCustomerController")
+@WebServlet("/RegisterCustomerController")
 public class RegisterCustomerController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 

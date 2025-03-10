@@ -25,11 +25,17 @@ public class BookingController extends HttpServlet {
 
         if ("add".equals(type)) {
             addBooking(request, response);
-        } else if ("update".equals(type)) {
+        } else if ("updateBooking".equals(type)) {
             updateBooking(request, response);
         } else if ("delete".equals(type)) {
             deleteBooking(request, response);
-        } else {
+        } 
+        else if ("getAllBookings".equals(type)) {
+            getAllBookings(request, response);
+        }
+        else if ("getSpecificBooking".equals(type)) {
+            getSpecificBooking(request, response);
+        }else {
             response.sendRedirect("error.jsp?message=Invalid Request Type");
         }
     }
@@ -74,7 +80,7 @@ public class BookingController extends HttpServlet {
 
             if (bookingID > 0) {
 //                response.sendRedirect("BookingDashboard.jsp?message=Booking Added Successfully&bookingID=" + bookingID);
-                   response.sendRedirect("Add-Payment.jsp?bookingID=" + bookingID + "&customerID=" + customerID + "&amount=" + totalFare);
+                   response.sendRedirect("Add-Payment.jsp?bookingID=" + bookingID + "&customerID=" + customerID + "&fare="+baseFare +"&tax="+tax+"&discount="+discount+"&totalFare=" + totalFare);
             } else {
                 response.sendRedirect("error.jsp?message=Booking Failed");
             }
@@ -192,6 +198,6 @@ public class BookingController extends HttpServlet {
             message = "Error fetching booking:"+e.getMessage();
             session.setAttribute("message", e);
         }
-        response.sendRedirect("BookingDeshboard.jsp");
+        response.sendRedirect("BookingDashboard.jsp");
     }
 }

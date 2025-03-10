@@ -157,7 +157,7 @@ public class CustomerController extends HttpServlet {
         }
 
         request.setAttribute("message", message);
-        RequestDispatcher rd = request.getRequestDispatcher("Add-Customer-Details.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("Register.jsp");
         rd.forward(request, response);
     }
 

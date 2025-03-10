@@ -22,18 +22,18 @@
                         <label for="customerID" class="form-label">Customer ID:</label>
                         <input type="text" class="form-control" id="customerID" name="customerID" value="<%= request.getParameter("customerID") %>" readonly>
                     </div>
-                      <label>Estimated Fare (LKR):</label>
-                <input type="text" class="form-control" id="fare" name="fare" readonly/>
+                        <label>Estimated Fare (LKR):</label>
+                        <input type="text" class="form-control" id="fare" name="fare" value="<%= request.getParameter("fare") %>" readonly/>
                      <div class="mb-3">
                         <label for="amount" class="form-label">Tax (7%)::</label>
-                        <input type="text" class="form-control" id="tex" name="tex" value="<%= request.getParameter("amount") %>" readonly>
+                        <input type="text" class="form-control" id="tax" name="tax" value="<%= request.getParameter("tax") %>" readonly>
                     </div>
                      <div class="mb-3">
                         <label for="amount" class="form-label">Discount (7%):</label>
-                        <input type="text" class="form-control" id="discount" name="discount" value="<%= request.getParameter("amount") %>" readonly>
+                        <input type="text" class="form-control" id="discount" name="discount" value="<%= request.getParameter("discount") %>" readonly>
                     </div>
                    <label>Total Fare (LKR):</label>
-                <input type="text" class="form-control" id="totalFare" name="totalFare" readonly />
+                <input type="text" class="form-control" id="totalFare" name="totalFare" value="<%= request.getParameter("totalFare") %>" readonly />
 
                     <!-- Stripe Card Element -->
                     <div class="mb-3">
@@ -69,7 +69,7 @@
     function processPayment(token) {
         var bookingID = document.getElementById("bookingID").value;
         var customerID = document.getElementById("customerID").value;
-        var tex = document.getElementById("tex").value;
+        var tax = document.getElementById("tax").value;
         var discount = document.getElementById("discount").value;
         var fare = document.getElementById("fare").value;
         var totalFare = document.getElementById("totalFare").value;
@@ -83,6 +83,8 @@
                 customerID: customerID,
                 amount: fare,
                 tax: tax,
+                currency: "lkr",
+                cardholderName:"sarees",
                 discount: discount,
                 totalFare: totalFare
             }).toString()

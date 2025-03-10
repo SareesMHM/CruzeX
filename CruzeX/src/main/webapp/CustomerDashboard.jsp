@@ -41,7 +41,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="CustomerDashboard.jsp">Home</a>
+                        <a class="nav-link active" href="CustomerController">Customers</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="SearchCustomer.jsp">Search & Update</a>

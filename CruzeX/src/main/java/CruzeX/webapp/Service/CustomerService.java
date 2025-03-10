@@ -36,9 +36,11 @@ public class CustomerService {
         if (manager.isUsernameExists(customer.getCustomerUsername())) {
             throw new SQLException("Username is already taken!");
         }
+        return getCustomerManager().addCustomer(customer);
 
         // Add New Customer
-        return manager.addCustomer(customer);
+//        return manager.addCustomer(customer);
+
     }
 
     //  Get a Specific Customer by ID
@@ -64,5 +66,9 @@ public class CustomerService {
     //  Validate Customer Login Credentials
     public Customer validateCustomerCredentials(String username, String password) throws ClassNotFoundException, SQLException {
         return getCustomerManager().validateCustomerCredentials(username, password);
+    }
+     // Email exists (used for forgot password)
+    public boolean doesEmailExist(String email) throws SQLException, ClassNotFoundException {
+        return getCustomerManager().isEmailExists(email);
     }
 }

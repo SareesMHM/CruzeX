@@ -33,7 +33,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">${vehicle.vehicleName}</h5>
                                 <p class="card-text"><strong>Category:</strong> ${vehicle.category}</p>
-                                <p class="card-text"><strong>Monthly Fee:</strong> $${vehicle.monthFee}</p>
+                                <p class="card-text"><strong>Per 1Km:</strong> $${vehicle.monthFee}</p>
                                 <p class="card-text"><strong>Assigned Driver ID:</strong> ${vehicle.driverID}</p>
 
                                 <!-- Booking button redirects to Add-Booking.jsp with pre-filled values -->
