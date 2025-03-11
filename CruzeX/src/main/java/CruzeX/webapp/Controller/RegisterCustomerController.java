@@ -44,7 +44,7 @@ public class RegisterCustomerController extends HttpServlet {
 //            return;
 //        }
 
-        Customer customer = new Customer(customerFullName, Integer.parseInt(customerPhoneNumber), dateOfBirth, 
+        Customer customer = new Customer(customerFullName, customerPhoneNumber, dateOfBirth, 
                                          customerAddress, gender, customerEmail, 
                                          customerUsername, customerPassword);
 

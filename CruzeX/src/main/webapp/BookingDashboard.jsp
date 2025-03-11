@@ -38,9 +38,7 @@
         <li class="nav-item">
             <a class="link-secondary nav-link" href="Search-Booking.jsp">Search & Update Booking</a>
         </li>
-        <li class="nav-item">
-            <a class="link-secondary nav-link" href="BookingController?type=">Add Booking</a>
-        </li>
+      
     </ul>
 
     <br/>

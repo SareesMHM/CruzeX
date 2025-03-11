@@ -95,14 +95,14 @@ public class CustomerController extends HttpServlet {
         request.setAttribute("customer", customer);
         request.setAttribute("message", message);
 
-        RequestDispatcher rd = request.getRequestDispatcher("Search-Customer-Details.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("SearchCustomer.jsp");
         rd.forward(request, response);
     }
 
     private void updateCustomer(HttpServletRequest request, HttpServletResponse response, CustomerService service) throws ServletException, IOException {
         int customerID = Integer.parseInt(request.getParameter("customerID"));
         String customerFullName = request.getParameter("customerFullName");
-        int customerPhoneNumber = Integer.parseInt(request.getParameter("customerPhoneNumber"));
+        String customerPhoneNumber = request.getParameter("customerPhoneNumber");
         String dateOfBirth = request.getParameter("dateOfBirth");
         String customerAddress = request.getParameter("customerAddress");
         String gender = request.getParameter("gender");
@@ -133,7 +133,7 @@ public class CustomerController extends HttpServlet {
 
     private void addCustomer(HttpServletRequest request, HttpServletResponse response, CustomerService service) throws ServletException, IOException {
         String customerFullName = request.getParameter("customerFullName");
-        int customerPhoneNumber = Integer.parseInt(request.getParameter("customerPhoneNumber"));
+        String customerPhoneNumber = request.getParameter("customerPhoneNumber");
         String dateOfBirth = request.getParameter("dateOfBirth");
         String customerAddress = request.getParameter("customerAddress");
         String gender = request.getParameter("gender");

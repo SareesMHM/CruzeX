@@ -27,13 +27,13 @@ public class PaymentController extends HttpServlet {
         String customerID = request.getParameter("customerID");
         String amountStr = request.getParameter("amount");
         String cardholderName = request.getParameter("cardholderName");
-        double tax = Double.parseDouble(request.getParameter("tax"));
-            double discount = Double.parseDouble(request.getParameter("discount"));
-            double totalFare = Double.parseDouble(request.getParameter("totalFare"));
+        String taxStr = request.getParameter("tax");
+        String discountStr = request.getParameter("discount");
+        String totalFareStr = request.getParameter("totalFare");
 
         response.setContentType("application/json");
 
-        if (token == null || bookingID == null || amountStr == null || customerID == null || cardholderName == null) {
+        if (token == null || bookingID == null || amountStr == null || customerID == null || cardholderName == null ||taxStr == null || discountStr == null || totalFareStr == null) {
             response.getWriter().write("{\"success\": false, \"message\": \"Invalid request parameters.\"}");
             return;
         }
@@ -54,10 +54,12 @@ public class PaymentController extends HttpServlet {
             Payment payment = new Payment(
                     Integer.parseInt(bookingID),
                     Integer.parseInt(customerID),
+                    Double.parseDouble(taxStr),
+                    Double.parseDouble(discountStr),
                     Double.parseDouble(amountStr),
-                    tax,
-                    discount,
-                    totalFare,
+                    Double.parseDouble(totalFareStr),
+                    
+                    
                     cardholderName,
                     token.substring(token.length() - 4) // Store only last 4 digits of the token
             );

@@ -32,7 +32,7 @@ public class CustomerManager {
                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setString(1, customer.getCustomerFullName());
-            ps.setInt(2, customer.getCustomerPhoneNumber());
+            ps.setString(2, customer.getCustomerPhoneNumber());
             ps.setString(3, customer.getDateOfBirth());
             ps.setString(4, customer.getCustomerAddress());
             ps.setString(5, customer.getGender());
@@ -83,7 +83,7 @@ public class CustomerManager {
                            "WHERE CustomerID = ?";
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setString(1, customer.getCustomerFullName());
-            ps.setInt(2, customer.getCustomerPhoneNumber());
+            ps.setString(2, customer.getCustomerPhoneNumber());
             ps.setString(3, customer.getDateOfBirth());
             ps.setString(4, customer.getCustomerAddress());
             ps.setString(5, customer.getGender());
@@ -154,7 +154,7 @@ public class CustomerManager {
         return new Customer(
             rs.getInt("CustomerID"), 
             rs.getString("CustomerFullName"), 
-            rs.getInt("CustomerPhoneNumber"), 
+            rs.getString("CustomerPhoneNumber"), 
             rs.getString("DateOfBirth"), 
             rs.getString("CustomerAddress"), 
             rs.getString("Gender"), 

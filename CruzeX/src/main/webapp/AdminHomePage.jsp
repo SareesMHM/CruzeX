@@ -22,7 +22,7 @@
       <div class="navbar-nav" style="#ffff">
           <a class="nav-link active mx-0 mx-md-3 fs-6" aria-current="page" href="CruzeXHome.jsp">Home</a>
         <a class="nav-link mx-0 mx-md-3  fs-6" href="BookingController?type=getAllBookings">Manage Booking</a>
-        <a class="nav-link mx-0 mx-md-3 fs-6" href="DriverDashboard.jsp">Manage Driver</a>
+        <a class="nav-link mx-0 mx-md-3 fs-6" href="DriverController">Manage Driver</a>
         <a class="nav-link mx-0 mx-md-3 fs-6" href="VehicleController">Manage Vehicle</a>
       
         <a class="nav-link mx-0 mx-md-3 fs-6" href="CustomerController">Manage Customer</a>

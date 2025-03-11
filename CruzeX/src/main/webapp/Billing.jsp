@@ -16,7 +16,10 @@
     <div class="card p-4">
         <p><strong>Booking ID:</strong> <%= request.getParameter("bookingID") %></p>
         <p><strong>Customer ID:</strong> <%= request.getParameter("customerID") != null ? request.getParameter("customerID") : "N/A" %></p>
+        <p><strong>Discount:</strong> <%= request.getParameter("discount") %></p>
+        <p><strong>Tax:</strong> <%= request.getParameter("tax") %></p>
         <p><strong>Amount Paid (LKR):</strong> <%= request.getParameter("amount") %></p>
+        
         <p><strong>Payment Status:</strong> <%= request.getParameter("paymentStatus") %></p>
         <button onclick="window.print()" class="btn btn-secondary">Print Invoice</button>
         <a href="CustomerHomePage.jsp" class="btn btn-primary">Return to Home</a>

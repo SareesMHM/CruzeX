@@ -3,7 +3,7 @@ package CruzeX.webapp.Model;
 public class Customer {
     private int customerID;
     private String customerFullName;
-    private int customerPhoneNumber;
+    private String customerPhoneNumber;
     private String dateOfBirth;
     private String customerAddress;
     private String gender;
@@ -15,7 +15,7 @@ public class Customer {
     public Customer() {}
 
     //  Constructor with all details (excluding confirmPassword)
-    public Customer(String customerFullName, int customerPhoneNumber, String dateOfBirth,
+    public Customer(String customerFullName, String customerPhoneNumber, String dateOfBirth,
                     String customerAddress, String gender, String customerEmail,
                     String customerUsername, String customerPassword) {
         this.customerFullName = customerFullName;
@@ -28,7 +28,7 @@ public class Customer {
         this.customerPassword = customerPassword;
     }
     
-    public Customer(int customerID,String customerFullName, int customerPhoneNumber, String dateOfBirth,
+    public Customer(int customerID,String customerFullName, String customerPhoneNumber, String dateOfBirth,
                     String customerAddress, String gender, String customerEmail,
                     String customerUsername, String customerPassword) {
         this.customerID=customerID;
@@ -63,13 +63,15 @@ public class Customer {
         this.customerFullName = customerFullName;
     }
 
-    public int getCustomerPhoneNumber() {
+    public String getCustomerPhoneNumber() {
         return customerPhoneNumber;
     }
 
-    public void setCustomerPhoneNumber(int customerPhoneNumber) {
+    public void setCustomerPhoneNumber(String customerPhoneNumber) {
         this.customerPhoneNumber = customerPhoneNumber;
     }
+
+  
 
     public String getDateOfBirth() {
         return dateOfBirth;

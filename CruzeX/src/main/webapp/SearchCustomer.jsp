@@ -59,7 +59,7 @@
                 <div class="form-container">
                     <h3>Search Customer</h3>
                     <br/>
-                    <form method="get" action="CustomerController">
+                    <form method="get" action="CustomerController?type=specific">
                         <label for="customerID">Enter Customer ID:</label>
                         <input type="text" class="form-control" name="customerID" id="customerID" required>
                         <input type="hidden" name="type" value="specific">
