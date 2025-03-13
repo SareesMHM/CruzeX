@@ -46,6 +46,7 @@
         <h3 class="text-center mb-4">Payment Records</h3>
         <table class="table table-striped">
             <thead>
+                 
                 <tr class="table-dark">
                     <th>Payment ID</th>
                     <th>Cardholder Name</th>
@@ -55,9 +56,13 @@
                     <th>Customer ID</th>
                     <th>Action</th>
                 </tr>
+                           
+            </tbody>
             </thead>
             <tbody>
-                <c:forEach var="payment" items="${paymentList}">
+                <c:choose>
+                    <c:when test="${not empty sessionScope.paymentList}">
+                        <c:forEach var="booking" items="${sessionScope.paymentList}">
                     <tr>
                         <td>${payment.paymentId}</td>
                         <td>${payment.cardholderName}</td>
@@ -74,6 +79,11 @@
                         </td>
                     </tr>
                 </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <tr><td colspan="14" class="text-center">No bookings found.</td></tr>
+                    </c:otherwise>
+                </c:choose>
             </tbody>
         </table>
     </div>

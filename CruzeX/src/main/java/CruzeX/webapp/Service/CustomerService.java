@@ -7,17 +7,17 @@ import java.util.List;
 
 public class CustomerService {
     
-    private static CustomerService customerServiceInstance;
+    private static CustomerService customerServiceObj;
 
     //  Private Constructor to Prevent Direct Instantiation
     private CustomerService() {}
 
     //  Singleton Pattern: Get Single Instance of Service
     public static synchronized CustomerService getCustomerServiceInstance() {
-        if (customerServiceInstance == null) {
-            customerServiceInstance = new CustomerService();
+        if (customerServiceObj == null) {
+            customerServiceObj = new CustomerService();
         }
-        return customerServiceInstance;
+        return customerServiceObj;
     }
 
     //  Get CustomerManager Instance

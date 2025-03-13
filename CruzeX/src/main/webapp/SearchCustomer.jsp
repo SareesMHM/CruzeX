@@ -46,7 +46,7 @@
             <a class="text-white nav-link" href="SearchCustomer.jsp">Search Customer & Update</a>
         </li>
         <li class="nav-item">
-            <a class="link-secondary nav-link" href="AddCustomer.jsp">Add Customer</a>
+            <a class="link-secondary nav-link" href="Register.jsp">Add Customer</a>
         </li>
     </ul>
 

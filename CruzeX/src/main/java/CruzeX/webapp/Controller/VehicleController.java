@@ -4,6 +4,7 @@ import CruzeX.webapp.Model.Driver;
 import CruzeX.webapp.Model.Vehicle;
 import CruzeX.webapp.Service.DriverService;
 import CruzeX.webapp.Service.VehicleService;
+import java.io.File;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,8 +16,18 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Scanner;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.http.Part;
 
 @WebServlet("/VehicleController")
+
+@MultipartConfig(
+    fileSizeThreshold = 1024 * 1024 * 2,  // 2MB before writing to disk
+    maxFileSize = 1024 * 1024 * 10,       // 10MB max file size
+    maxRequestSize = 1024 * 1024 * 50     // 50MB max request size
+)
+   
 public class VehicleController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private final VehicleService vehicleService = VehicleService.getVehicleServiceInstance();
@@ -49,7 +60,7 @@ public class VehicleController extends HttpServlet {
 
         if (type != null) {
             switch (type) {
-                case "update":
+                case "updateVehicle":
                     updateVehicle(request, response);
                     break;
                 case "add":
@@ -101,37 +112,95 @@ public class VehicleController extends HttpServlet {
         rd.forward(request, response);
     }
 
-    private void updateVehicle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String vehicleId = request.getParameter("vehicleId");
-        String vehicleName = request.getParameter("vehicleName");
-        String image = request.getParameter("image");
-        String category = request.getParameter("category");
-        int monthFee = 0;
-        int driverID = 0;
-        String message = "";
+//    private void updateVehicle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//        String vehicleId = request.getParameter("vehicleId");
+//        String vehicleName = request.getParameter("vehicleName");
+//        String image = request.getParameter("image");
+//        String category = request.getParameter("category");
+//        int monthFee = 0;
+//        int driverID = 0;
+//        String message = "";
+//
+//        try {
+//            monthFee = Integer.parseInt(request.getParameter("monthFee"));
+//            driverID = Integer.parseInt(request.getParameter("driverID"));
+//        } catch (NumberFormatException e) {
+//            message = "Invalid input for month fee or driver ID.";
+//        }
+//
+//        if (vehicleId == null || vehicleId.trim().isEmpty() || vehicleName == null || category == null) {
+//            message = "All fields are required.";
+//        } else {
+//            try {
+//                Vehicle vehicle = new Vehicle(vehicleId, vehicleName, image, category, monthFee, driverID);
+//                boolean result = vehicleService.editVehicle(vehicle);
+//                message = result ? "Vehicle " + vehicleId + " updated successfully!" : "Failed to update vehicle.";
+//            } catch (ClassNotFoundException | SQLException e) {
+//                message = "Error updating vehicle: " + e.getMessage();
+//            }
+//        }
+//
+//        request.setAttribute("message", message);
+////        response.sendRedirect("Search-Vehicle-Details.jsp");
+//        RequestDispatcher rd = request.getRequestDispatcher("Search-Vehicle-Details.jsp");
+//        rd.forward(request, response);
+//    }
 
-        try {
-            monthFee = Integer.parseInt(request.getParameter("monthFee"));
-            driverID = Integer.parseInt(request.getParameter("driverID"));
-        } catch (NumberFormatException e) {
-            message = "Invalid input for month fee or driver ID.";
-        }
+    
 
-        if (vehicleId == null || vehicleId.trim().isEmpty() || vehicleName == null || category == null) {
-            message = "All fields are required.";
-        } else {
-            try {
-                Vehicle vehicle = new Vehicle(vehicleId, vehicleName, image, category, monthFee, driverID);
-                boolean result = vehicleService.editVehicle(vehicle);
-                message = result ? "Vehicle " + vehicleId + " updated successfully!" : "Failed to update vehicle.";
-            } catch (ClassNotFoundException | SQLException e) {
-                message = "Error updating vehicle: " + e.getMessage();
-            }
-        }
+ 
+private void updateVehicle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    String vehicleId = request.getParameter("vehicleId");
+    String vehicleName = request.getParameter("vehicleName");
+    String category = request.getParameter("category");
+    int monthFee = 0, driverID = 0;
+    String message = "";
+    String imageName = ""; // Image filename
 
-        request.setAttribute("message", message);
-        response.sendRedirect("Search-Vehicle-Details.jsp");
+    try {
+        monthFee = Integer.parseInt(request.getParameter("monthFee"));
+        driverID = Integer.parseInt(request.getParameter("driverID"));
+    } catch (NumberFormatException e) {
+        message = "Invalid input for month fee or driver ID.";
     }
+
+    // Validate required fields
+    if (vehicleId == null || vehicleId.trim().isEmpty() || vehicleName == null || category == null) {
+        message = "All fields are required.";
+    } else {
+        try {
+            // Handling file upload
+            Part filePart = request.getPart("image"); // Get file part
+            if (filePart != null && filePart.getSize() > 0) {
+                imageName = filePart.getSubmittedFileName();
+                
+                // Define upload path
+                String uploadPath = getServletContext().getRealPath("/img/car"); // Get server path
+                File uploadDir = new File(uploadPath);
+                if (!uploadDir.exists()) uploadDir.mkdir(); // Create directory if not exists
+                
+                // Write file to the server
+                filePart.write(uploadPath + File.separator + imageName);
+                // Create Vehicle object and update
+                Vehicle vehicle = new Vehicle(vehicleId, vehicleName, imageName, category, monthFee, driverID);
+                boolean result = vehicleService.editVehicle(vehicle);
+                message = result ? "Vehicle updated successfully!" : "Failed to update vehicle.";
+                } else {
+                    message = "No file uploaded.";
+                }
+
+            
+            
+        } catch (Exception e) {
+            message = "Error updating vehicle: " + e.getMessage();
+        }
+    }
+
+    // Set message attribute and forward request
+    request.setAttribute("message", message);
+    request.getRequestDispatcher("Search-Vehicle-Details.jsp").forward(request, response);
+}
+
 
     private void addVehicle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String vehicleID = request.getParameter("vehicleID");

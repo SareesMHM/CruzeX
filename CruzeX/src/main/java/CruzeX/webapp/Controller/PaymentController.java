@@ -67,7 +67,7 @@ public class PaymentController extends HttpServlet {
             boolean paymentSuccess = PaymentService.getInstance().processPayment(payment);
 
             if (paymentSuccess) {
-                response.sendRedirect("Billing.jsp?bookingID=" + bookingID + "&amount=" + amountStr + "&paymentStatus=Successful");
+                response.sendRedirect("Billing.jsp?bookingID=" + bookingID + "&customerID=" + customerID + "&fare="+amountStr +"&tax="+taxStr+"&discount="+discountStr+"&totalFare=" + totalFareStr + "&paymentStatus=Successful");
             } else {
                 response.getWriter().write("{\"success\": false, \"message\": \"Failed to store payment in database.\"}");
             }
@@ -78,4 +78,9 @@ public class PaymentController extends HttpServlet {
             response.getWriter().write("{\"success\": false, \"message\": \"Invalid amount format.\"}");
         }
     }
+    @Override
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    response.sendRedirect("PaymentDashboard.jsp"); // Or a custom "Invalid Access" page
+}
 }

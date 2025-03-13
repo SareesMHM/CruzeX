@@ -19,10 +19,11 @@ import CruzeX.webapp.Service.CustomerService;
 @WebServlet("/CustomerController")
 public class CustomerController extends HttpServlet {
     private static final long serialVersionUID = 1L;
+    private final CustomerService customerService = CustomerService.getCustomerServiceInstance();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String type = request.getParameter("type");
-        CustomerService customerService = CustomerService.getCustomerServiceInstance();
+        
 
         if (type != null && type.equals("specific")) {
             getSpecificCustomer(request, response, customerService);
@@ -111,23 +112,34 @@ public class CustomerController extends HttpServlet {
         String customerPassword = request.getParameter("customerPassword");
 
         Customer customer = new Customer(customerFullName, customerPhoneNumber, dateOfBirth, customerAddress, gender, customerEmail, customerUsername, customerPassword);
-        customer.setCustomerID(customerID);
-
-        boolean result;
-        String message = "";
+       String message = "";
         try {
-            result = service.editCustomer(customer);
-            if (result) {
-                message = "Customer " + customerID + " has been successfully updated!";
-            } else {
-                message = "Failed to update customer! Customer ID: " + customerID;
-            }
+            boolean result = customerService.editCustomer(customer);
+            message = result ? "Customer " + customerID + " has been successfully updated!" : "Failed to update the customer! Customer ID: " + customerID;
         } catch (ClassNotFoundException | SQLException e) {
             message = e.getMessage();
         }
+       
+        
+
+//customer.setCustomerID(customerID);
+
+//        boolean result;
+//        String message = "";
+//        try {
+//            result = service.editCustomer(customer);
+//            if (result) {
+//                message = "Customer " + customerID + " has been successfully updated!";
+//            } else {
+//                message = "Failed to update customer! Customer ID: " + customerID;
+//            }
+//        } catch (ClassNotFoundException | SQLException e) {
+//            message = e.getMessage();
+//        }
+
 
         request.setAttribute("message", message);
-        RequestDispatcher rd = request.getRequestDispatcher("Search-Customer-Details.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("SearchCustomer.jsp");
         rd.forward(request, response);
     }
 

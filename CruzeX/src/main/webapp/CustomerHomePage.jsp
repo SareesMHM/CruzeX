@@ -13,8 +13,8 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light" >
   <div class="container-fluid" >
-      <img style="border-radius:50%;width: 70px;height: 70px; margin:0 10px 0 50px " alt="" src="img/ima (1).webp">
-    <p class="fw-bold fs-4 mt-3" style="color: black;">CruzeX</p>
+      <img style="border-radius:50%;width: 70px;height: 70px; margin:0 10px 0 50px " alt="" src="img/x (4).webp">
+    <p class="fw-bold fs-4 mt-3" style="color: black;">MCC</p>
     <button style="margin:0 30px;" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -24,6 +24,7 @@
           <a class="nav-link mx-0 mx-md-3 fs-6" href="Add-Booking.jsp">Add Booking</a>
         <a class="nav-link mx-0 mx-md-3 fs-6" href="PaymentDashboard.jsp">Make Payment</a>
         <a class="nav-link mx-0 mx-md-3 fs-6" href="VehicleController?type=customer">View Vehicle</a>
+        <a class="nav-link mx-0 mx-md-3 fs-6" href="QueryForm.jsp">Ask Your Queries</a>
         
         
       </div>
@@ -80,35 +81,86 @@
 
 
 
+<style>
+/* Navbar Styling */
+.navbar {
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    padding: 0.75rem 1.5rem;
+}
 
+.navbar img {
+    height: 60px;
+    width: 60px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 15px;
+}
 
+.navbar .navbar-nav .nav-link {
+    font-weight: 500;
+    color: #333;
+    transition: all 0.3s ease-in-out;
+}
 
+.navbar .navbar-nav .nav-link:hover,
+.navbar .navbar-nav .nav-link.active {
+    color: #dc3545; /* Bootstrap's red */
+    font-weight: 600;
+}
 
+/* Brand name */
+.navbar p {
+    font-size: 1.8rem;
+    color: #dc3545;
+    margin-bottom: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
+/* Carousel */
+.carousel-item {
+    position: relative;
+    height: 450px;
+    overflow: hidden;
+}
 
+.carousel-item img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    filter: brightness(0.4);
+}
 
+.carousel-caption {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.6);
+}
 
+.carousel-caption h5 {
+    font-size: 3rem;
+    color: white;
+    font-weight: bold;
+    animation: fadeInUp 1s ease-out;
+}
 
-  <div class="row g-0 bg-light position-relative p-5">
-    <h5 class="mt-2 mb-3 fs-2">Ask Your Queries</h5>
-    <div class="mb-3">
-  		<label class="form-label">your name</label>
-  		<input type="name" class="form-control" id="exampleFormControlInput1">
-	</div>
-	<div class="mb-3">
-  		<label for="exampleFormControlInput1" class="form-label">Email address</label>
-  		<input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
-	</div>
-	<div class="mb-3">
-  		<label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
-  		<textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-	</div>
-   
-  </div>
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
+/* Responsive fix */
+@media (max-width: 768px) {
+    .carousel-caption h5 {
+        font-size: 2rem;
+    }
 
-
-
-
+    .navbar p {
+        font-size: 1.3rem;
+    }
+}
+</style>
 </body>
 </html>

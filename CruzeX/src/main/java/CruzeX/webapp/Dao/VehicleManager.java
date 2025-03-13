@@ -107,8 +107,9 @@ public class VehicleManager {
         ps.setString(2, vehicle.getImage());
         ps.setString(3, vehicle.getCategory());
         ps.setInt(4, vehicle.getMonthFee());
-        ps.setString(5, vehicle.getVehicleID());
-        ps.setInt(6, vehicle.getDriverID());
+        ps.setInt(5, vehicle.getDriverID());
+        ps.setString(6, vehicle.getVehicleID());
+        
 
         int result = ps.executeUpdate();
         ps.close();

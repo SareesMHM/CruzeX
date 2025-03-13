@@ -4,49 +4,98 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>CruzeX</title>
-<link rel="shortcut icon" href="img/ima (1).webp">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<title>Maga City Cab</title>
+<link rel="shortcut icon" href="img/ima 3.webp">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+/* Header Styles */
+.header-nav {
+    background-color: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar-brand img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+.navbar-brand span {
+    font-size: 24px;
+    font-weight: initial;
+    color: #03509e;
+}
+
+.nav-link {
+    color: #333 !important;
+    font-weight: initial;
+    padding: 10px 15px;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.nav-link:hover {
+    color: #00ab9f !important;
+    text-decoration: none;
+}
+
+.btn-success {
+    background-color: #00ab9f;
+    border: none;
+    font-weight: initial;
+}
+
+.btn-success:hover {
+    background-color: #008f86;
+    
+}
+.carousel-caption h5 {
+    font-size: 42px ;
+    color: #FFFFE4;
+    font-weight: initial;
+    font-family: serif;
+    font-style: normal;
+        
+        
+}
+
+
+</style>
 </head>
 <body>
 
-<!-- ################# Header Starts Here#######################--->
-    
-      <header id="menu-jk">
-    
-        <div id="nav-head" class="header-nav">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-2 col-md-3  col-sm-12" style="color:#000;font-weight:bold; font-size:30px; margin-top: 1% !important;">CruzeX
-                        <img src="img/ima (1).webp"  style="border-radius:50%;width: 70px;height: 70px;margin:0 10px 0 50 px "
-                       <a data-toggle="collapse" data-target="#menu" href="#menu" ><i class="fas d-block d-md-none small-menu fa-bars"></i></a>
-                    </div>
-                    <div id="menu" class="col-lg-8 col-md-9 d-none d-md-block nav-item">
-                        <ul>
-                            <li><a href="#">Home</a></li>
-                            <li><a href="#services">Services</a></li>
-                            <li><a href="#about_us">About Us</a></li>
-                            <li><a href="#gallery">Gallery</a></li>
-                          
-                            <li><a href="#logins">Logins</a></li>  
-                        </ul>
-                    </div>
-                    <div class="col-sm-2 d-none d-lg-block appoint">
-                        <a class="btn btn-success" href="Login-Customer.jsp">Book</a>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </header>
+<!-- ################# Header Starts Here ####################### -->
+<header class="header-nav">
+  <nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="#">
+          <img src="img/x (4).webp" alt="Logo">
+        <span>MCC</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about_us">About Us</a></li>
+          <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
+          <li class="nav-item"><a class="nav-link" href="#logins">Logins</a></li>
+        </ul>
+        <a class="btn btn-success px-4" href="Login-Customer.jsp">Book</a>
+      </div>
+    </div>
+  </nav>
+</header>
 
               
-
-
-
-
-
 
 <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-indicators">
@@ -56,27 +105,31 @@
   </div>
   <div class="carousel-inner">
     <div class="carousel-item active" style="height: 450px">
-        <img src="img/ima 1.jpg" class="d-block w-100" alt="..." style="height: 100%; object-fit:cover; filter: brightness(0.5);">
+        <img src="img/car/outback.jpg" class="d-block w-100" alt="..." style="height: 100%; object-fit:cover; filter: brightness(0.5);">
       <div class="carousel-caption d-none d-md-block top-0 mt-4">
-        <h5 class="display-1 fw-bolder text-capitalize">Admin Portal</h5>
+        
+       
+            
+
+        
         
       </div>
     </div>
     <div class="carousel-item" style="height: 450px">
         <img src="img/car/Audi (1).jpg" class="d-block w-100" alt="..." style="height: 100%; object-fit:cover; filter: brightness(0.6);">
-      <div class="carousel-caption d-none d-md-block top-0 mt-4">
-        <h5 class="display-1 fw-bolder text-capitalize">Driver Portal</h5>
+     
+        
         
       </div>
     </div>
     <div class="carousel-item" style="height: 450px">
-        <img src="img/car/ferrari (1).jpg" class="d-block w-100" alt="..." style="height: 100%; object-fit:cover; filter: brightness(0.6);">
-      <div class="carousel-caption d-none d-md-block top-0 mt-4">
-        <h5 class="display-1 fw-bolder text-capitalize">Customer Portal</h5>
+        <img src="img/car/bmw_x5.jpg" class="d-block w-100" alt="..." style="height: 100%; object-fit:cover; filter: brightness(0.6);">
+      
+        
         
       </div>
     </div>
-  </div>
+  
   <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Previous</span>
@@ -86,7 +139,7 @@
     <span class="visually-hidden">Next</span>
   </button>
      
-</div>
+
 
 
 
@@ -165,7 +218,23 @@
 
     </section>
  <style>/* ===================================== Key Features CSS ================================== */
-.key-features .kvxol {
+.inner-title {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.inner-title h2 {
+    font-size: 36px;
+    font-weight: initial;
+    color: #03509e;
+    margin-bottom: 10px;
+}
+
+.inner-title p {
+    font-size: 16px;
+    color: #666;
+}
+     .key-features .kvxol {
   padding: 0px; }
 .key-features .single-key {
   background-color: #FFF;
@@ -249,39 +318,69 @@
 
 
 
-    <!--  ************************* About Us Starts Here ************************** -->
-        
-    <section id="about_us" class="about-us">
-        <div class="row no-margin">
-            <div class="col-sm-6 image-bg no-padding">
-                
+<!--  ************************* About Us Starts Here ************************** -->
+<section id="about_us" class="about-us py-5">
+    <div class="container">
+        <div class="section-title text-center mb-5">
+            <h2>About Us</h2>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-sm-6 image-bg">
+                <!-- Background image via CSS -->
             </div>
-            <div class="col-sm-6 abut-yoiu">
+            <div class="col-sm-6 abut-yoiu text-center">
                 <h3>About Our Cab</h3>
-                <p> 
+                   <p class="mt-3 px-3">
+                    At Maga City Cab, we are revolutionizing the way people experience transportation. As a cutting-edge vehicle
+                    reservation and management platform, we aim to streamline the booking process for both customers and
+                    service providers, ensuring a seamless and efficient journey from start to finish.<br><br>
 
-At CruzeX, we are revolutionizing the way people experience transportation. As a cutting-edge vehicle reservation and management platform, we aim to streamline the booking process for both customers and service providers, ensuring a seamless and efficient journey from start to finish.  
+                    With a commitment to innovation and user-friendly technology, Maga City Cab offers a robust and secure system
+                    that enables users to book rides effortlessly while giving service providers powerful tools to manage
+                    operations effectively. Our system integrates authentication, booking management, billing, and vehicle
+                    tracking into a single, easy-to-use platform.<br><br>
 
-With a commitment to innovation and user-friendly technology, CruzeX offers a robust and secure system that enables users to book rides effortlessly while giving service providers powerful tools to manage operations effectively. Our system integrates authentication, booking management, billing, and vehicle tracking into a single, easy-to-use platform.  
+                    Driven by a passion for efficiency and customer satisfaction, Maga City Cab is dedicated to making travel more
+                    convenient, reliable, and accessible for everyone. Whether you?re a daily commuter, a business traveler,
+                    or a fleet operator, Maga City Cab is here to transform your transportation experience.<br><br>
 
-Driven by a passion for efficiency and customer satisfaction, CruzeX is dedicated to making travel more convenient, reliable, and accessible for everyone. Whether you?re a daily commuter, a business traveler, or a fleet operator, CruzeX is here to transform your transportation experience.  
-
-Your journey, simplified. 
-
-</p>
-<style>
-    /*====================================== About Us Style ====================================*/
-.about-us .image-bg {
-  background-image: url("../images/");
-  background-size: contain; }
-.about-us .abut-yoiu {
-  padding: 50px;
-  background-color: #FFF; }
-</style>
-
+                    <strong>Your journey, simplified.</strong>
+                </p>
             </div>
         </div>
-    </section> 
+    </div>
+</section>
+
+<style>
+/* ====================================== About Us Style ===================================== */
+.about-us .section-title h2 {
+    font-size: 36px;
+    font-weight: initial;
+    color: #03509e;
+    margin-bottom: 30px;
+}
+
+.about-us .image-bg {
+    background-image: url("img/xxx.webp");
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    min-height: 600px;
+}
+
+.about-us .abut-yoiu {
+    padding: 30px;
+    background-color: #FFF;
+    min-height: 400px;
+}
+
+.about-us h3 {
+    font-size: 28px;
+    font-weight: lighter;
+    color: #00ab9f;
+    margin-bottom: 20px;
+}
+</style>
 
      <!--  ************************* Gallery Starts Here ************************** -->
         <div id="gallery" class="gallery">    
@@ -340,7 +439,7 @@ Your journey, simplified.
                 <img src="img/car/gallery/BUS (2).jpg" class="img-responsive">
             </div>
         <div class="gallery_product col-lg-4 col-md-4 col-sm-4 col-xs-6 filter irrigation">
-                <img src="img/car/gallery/BUS (1).jpg" class="img-responsive">
+                <img src="img/car/gallery/BUS (3).jpg" class="img-responsive">
             </div>
 
             

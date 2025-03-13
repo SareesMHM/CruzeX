@@ -33,14 +33,14 @@ class BookingTest {
         booking.setDropLocation("456 Elm St");
         assertEquals("456 Elm St", booking.getDropLocation());
 
-        // ✅ New: Test Distance and Fare
+        //   Test Distance and Fare
         booking.setDistance(10.5);
         assertEquals(10.5, booking.getDistance(), 0.01); // Delta for floating-point comparison
 
         booking.setFare(1000.75);
         assertEquals(1000.75, booking.getFare(), 0.01);
 
-        // ✅ New: Test Tax and Discount (7% each)
+        //  Test Tax and Discount (7% each)
         double expectedTax = 1000.75 * 0.07;
         double expectedDiscount = 1000.75 * 0.07;
         double expectedTotalFare = 1000.75 + expectedTax - expectedDiscount;
@@ -73,11 +73,11 @@ class BookingTest {
         assertEquals("123 Main St", booking.getPickupLocation());
         assertEquals("456 Elm St", booking.getDropLocation());
 
-        // ✅ Check Distance and Fare
+        //  Check Distance and Fare
         assertEquals(10.5, booking.getDistance(), 0.01);
         assertEquals(fare, booking.getFare(), 0.01);
 
-        // ✅ Check Tax, Discount, and Total Fare
+        //  Check Tax, Discount, and Total Fare
         assertEquals(tax, booking.getTax(), 0.01);
         assertEquals(discount, booking.getDiscount(), 0.01);
         assertEquals(totalFare, booking.getTotalFare(), 0.01);

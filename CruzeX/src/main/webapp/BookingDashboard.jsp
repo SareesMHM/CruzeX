@@ -29,6 +29,8 @@
 
 <div class="container-fluid">
     <ul class="nav justify-content-center bg-dark py-2">
+        <img style="border-radius:50%;width: 70px;height: 70px; margin:0 10px 0 50px " alt="" src="img/x (4).webp">
+    
         <li class="nav-item">
             <a class="link-warning nav-link px-5 mx-5" href="AdminHomePage.jsp">&laquo; Go to Home</a>
         </li>

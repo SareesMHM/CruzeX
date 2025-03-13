@@ -95,7 +95,7 @@
             try {
                 let data = JSON.parse(text);  // Try parsing JSON
                 if (data.success) {
-                    window.location.href = "Billing.jsp?customerID=" + data.customerID + "&bookingID=" + data.bookingID + "&amount=" + totalFare + "&paymentStatus=Successful";
+                    window.location.href = "Billing.jsp?customerID=" + data.customerID + "&bookingID=" + data.bookingID +"&discount="+discount+ "&tax="+ tax+ "&amount=" + totalFare + "&paymentStatus=Successful";
                 } else {
                     alert("Payment failed: " + data.message);
                 }

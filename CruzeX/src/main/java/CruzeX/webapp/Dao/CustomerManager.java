@@ -81,18 +81,19 @@ public class CustomerManager {
             String query = "UPDATE customer SET CustomerFullName = ?, CustomerPhoneNumber = ?, DateOfBirth = ?, " +
                            "CustomerAddress = ?, Gender = ?, CustomerEmail = ?, CustomerUsername = ?, CustomerPassword = ? " +
                            "WHERE CustomerID = ?";
-            PreparedStatement ps = connection.prepareStatement(query);
-            ps.setString(1, customer.getCustomerFullName());
-            ps.setString(2, customer.getCustomerPhoneNumber());
-            ps.setString(3, customer.getDateOfBirth());
-            ps.setString(4, customer.getCustomerAddress());
-            ps.setString(5, customer.getGender());
-            ps.setString(6, customer.getCustomerEmail());
-            ps.setString(7, customer.getCustomerUsername());
-            ps.setString(8, customer.getCustomerPassword());
-            ps.setInt(9, customer.getCustomerID());
-            result = ps.executeUpdate();
-            ps.close();
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setString(1, customer.getCustomerFullName());
+                ps.setString(2, customer.getCustomerPhoneNumber());
+                ps.setString(3, customer.getDateOfBirth());
+                ps.setString(4, customer.getCustomerAddress());
+                ps.setString(5, customer.getGender());
+                ps.setString(6, customer.getCustomerEmail());
+                ps.setString(7, customer.getCustomerUsername());
+                ps.setString(8, customer.getCustomerPassword());
+                ps.setInt(9, customer.getCustomerID());
+                result = ps.executeUpdate();
+            }
+            connection.close();
         }
         return result > 0;
     }

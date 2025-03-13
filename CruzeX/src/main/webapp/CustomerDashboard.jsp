@@ -33,8 +33,9 @@
 <body>
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <img style="border-radius:50%;width: 70px;height: 70px; margin:0 10px 0 50px " alt="" src="img/x (4).webp">
         <div class="container-fluid">
-            <a class="navbar-brand" href="AdminHomePage.jsp">CruzeX</a>
+            <a class="navbar-brand" href="AdminHomePage.jsp">MCC</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>

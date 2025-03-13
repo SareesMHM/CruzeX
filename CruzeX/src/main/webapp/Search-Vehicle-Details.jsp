@@ -45,7 +45,10 @@
             <!-- Edit Section -->
             <div class="col-md-6">
                 <h3>Edit Vehicle</h3>
-                <form method="post" action="VehicleController">
+               
+                <form method="post" action="VehicleController?type=updateVehicle"  enctype="multipart/form-data">
+<!--                    <input type="hidden" name="type" value="updateVehicle"/>-->
+
                     <div class="mb-3">
                         <label for="vehicleId">Vehicle ID:</label>
                         <input type="text" readonly class="form-control" id="vehicleId" name="vehicleId" 
@@ -64,10 +67,21 @@
                                value="${vehicle != null ? vehicle.category : ''}"/>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="image">Image URL:</label>
+<!--                    <div class="mb-3">
+                        <label for="image">Upload New Image:</label>
                         <input type="file" class="form-control" id="image" name="image" 
-                               value="${vehicle != null ? vehicle.image : ''}"/>
+                               <c:if test="${vehicle != null}">
+                            <p class="text-muted">Current Image: ${vehicle.image}</p>
+                        </c:if>
+                    </div>-->
+                    
+                    <div class="mb-3">
+                        <label for="image">Upload New Image:</label>
+                        <input type="file" class="form-control" id="image" name="image"/>
+                        <c:if test="${vehicle != null && not empty vehicle.image}">
+                            <p class="text-muted">Current Image:</p>
+                            <img src="img/car/${vehicle.image}" alt="Current Vehicle Image" class="img-thumbnail" width="150"/>
+                        </c:if>
                     </div>
 
                     <div class="mb-3">
@@ -82,7 +96,7 @@
                                value="${vehicle != null ? vehicle.driverID : ''}"/>
                     </div>
 
-                    <input type="hidden" name="type" value="updateVehicle">
+                   
                     <button type="submit" class="btn btn-warning">Update</button>
                     
                 </form>
@@ -91,16 +105,13 @@
     </div>
 
     <!-- Show Message Alert -->
-    <%
-        String message = (String) request.getAttribute("message");
-        if (message != null && !message.trim().isEmpty()) {
-    %>
-        <script>
-            alert("<%= message %>");
-        </script>
-    <%
-        }
-    %>
+    
 </div>
+                     <script>
+            var message = "<%= request.getAttribute("message") %>";
+            if (message) {
+                alert(message);
+            }
+        </script>
 </body>
 </html>

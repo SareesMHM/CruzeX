@@ -17,7 +17,7 @@ public class DriverLoginController extends HttpServlet {
 		        String password = request.getParameter("password");
 
 		       
-		        if ("admin".equals(username) && "1234".equals(password)) {
+		        if ("driver".equals(username) && "123456".equals(password)) {
 		            
 		            response.sendRedirect("DriverHomePage.jsp");
 		        } else {
