@@ -70,7 +70,7 @@
                         <td>${driver.licenseNumber}</td>
                         <td>${driver.email}</td>
                         <td>
-                            <form method="post" action="driverController">
+                            <form method="post" action="DriverController">
                                 <input type="hidden" name="driverId" value="${driver.driverID}"/>
                                 <input type="hidden" name="type" value="delete"/>
                                 <button type="submit" class="btn btn-danger">Remove</button>

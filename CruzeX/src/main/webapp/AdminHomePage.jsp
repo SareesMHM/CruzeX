@@ -26,7 +26,7 @@
         <a class="nav-link mx-0 mx-md-3 fs-6" href="DriverController">Manage Driver</a>
         <a class="nav-link mx-0 mx-md-3 fs-6" href="VehicleController">Manage Vehicle</a>
         <a class="nav-link mx-0 mx-md-3 fs-6" href="QueryController?type=getAllQueries">Admin - View Queries</a>
-        <a class="nav-link mx-0 mx-md-3 fs-6" href="PaymentController">Manage Payment</a>
+        <a class="nav-link mx-0 mx-md-3 fs-6" href="PaymentController?type=getAllPayments">Manage Payment</a>
         <a class="nav-link mx-0 mx-md-3 fs-6" href="CustomerController">Manage Customer</a>
                 
                 

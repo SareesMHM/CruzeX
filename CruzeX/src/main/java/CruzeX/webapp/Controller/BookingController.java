@@ -67,11 +67,6 @@ public class BookingController extends HttpServlet {
             double totalFare = Double.parseDouble(request.getParameter("totalFare"));
             
 
-            // Apply 7% tax and 7% discount
-//            double tax = baseFare * 0.07;
-//            double discount = baseFare * 0.07;
-//            double totalFare = baseFare + tax - discount;
-
             // Create Booking object
             Booking booking = new Booking(customerID, vehicleID, driverID, bookingDate, bookingTime, pickupLocation, dropLocation, distance, baseFare, tax, discount, totalFare);
 
@@ -128,22 +123,22 @@ public class BookingController extends HttpServlet {
     }
 
     private void deleteBooking(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try {
-            int bookingID = Integer.parseInt(request.getParameter("bookingID"));
+    try {
+        int bookingID = Integer.parseInt(request.getParameter("bookingID"));
 
-            boolean success = bookingService.deleteTheBooking(bookingID);
+        boolean success = bookingService.deleteTheBooking(bookingID);
 
-            if (success) {
-                response.sendRedirect("BookingDashboard.jsp?message=Booking Deleted Successfully");
-            } else {
-                response.sendRedirect("error.jsp?message=Booking Deletion Failed");
-            }
-        } catch (NumberFormatException e) {
-            response.sendRedirect("error.jsp?message=Invalid Booking ID");
-        } catch (Exception e) {
-            response.sendRedirect("error.jsp?message=An Unexpected Error Occurred");
+        if (success) {
+            response.sendRedirect("BookingDashboard.jsp?message=Booking Deleted Successfully");
+        } else {
+            response.sendRedirect("BookingDashboard.jsp?message=Booking Deletion Failed");
         }
+    } catch (NumberFormatException e) {
+        response.sendRedirect("BookingDashboard.jsp?message=Invalid Booking ID Format");
+    } catch (Exception e) {
+        response.sendRedirect("BookingDashboard.jsp?message=An Unexpected Error Occurred");
     }
+}
 
 //    private void getSpecificBooking(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //        try {

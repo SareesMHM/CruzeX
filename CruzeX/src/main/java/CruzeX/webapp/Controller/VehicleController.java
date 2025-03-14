@@ -30,7 +30,7 @@ import javax.servlet.http.Part;
    
 public class VehicleController extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private final VehicleService vehicleService = VehicleService.getVehicleServiceInstance();
+    private final VehicleService vehicleService = VehicleService.getVehicleServiceObj();
     private final DriverService driverService = DriverService.getDriverServiceInstance();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

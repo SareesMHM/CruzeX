@@ -13,7 +13,7 @@ public class VehicleService {
     private VehicleService() {
     }
 
-    public static synchronized VehicleService getVehicleServiceInstance() {
+    public static synchronized VehicleService getVehicleServiceObj() {
         if (vehicleServiceObj == null) {
             vehicleServiceObj = new VehicleService();
         }

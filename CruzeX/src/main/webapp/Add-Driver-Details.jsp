@@ -56,7 +56,7 @@
             <div class="col-md-6">
                 <div class="form-container">
                     <h3 class="text-center mb-4">Register Driver</h3>
-                    <form method="post" action="driverController">
+                    <form method="post" action="DriverController">
                         <div class="mb-3">
                             <label for="firstName" class="form-label">First Name:</label>
                             <input type="text" class="form-control" id="firstName" name="firstName"/>

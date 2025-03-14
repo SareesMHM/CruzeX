@@ -87,7 +87,7 @@
           <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
           <li class="nav-item"><a class="nav-link" href="#about_us">About Us</a></li>
           <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
-          <li class="nav-item"><a class="nav-link" href="#logins">Logins</a></li>
+          
         </ul>
         <a class="btn btn-success px-4" href="Login-Customer.jsp">Book</a>
       </div>

@@ -7,7 +7,10 @@
     <meta charset="ISO-8859-1">
     <title>Booking Dashboard</title>
     
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+   
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body {
             background-color: #f8f9fa;
@@ -104,6 +107,9 @@
                         <tr><td colspan="14" class="text-center">No bookings found.</td></tr>
                     </c:otherwise>
                 </c:choose>
+                        <c:if test="${not empty message}">
+    <div class="alert alert-success text-center">${message}</div>
+</c:if>
             </tbody>
         </table>
     </div>
